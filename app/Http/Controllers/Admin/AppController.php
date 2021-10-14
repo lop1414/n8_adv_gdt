@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Common\Controllers\Admin\AdminController;
 use App\Common\Enums\StatusEnum;
-use App\Common\Enums\SystemAliasEnum;
 use App\Common\Tools\CustomException;
 use App\Models\AppModel;
+use App\Services\Gdt\GdtAccountService;
 
 
 class AppController extends AdminController
@@ -22,11 +22,12 @@ class AppController extends AdminController
     }
 
     public function getAuthUrl($appId){
-        $redirectUri = config('common.system_api.'.SystemAliasEnum::ADV_GDT.'.url').'/front/ks/grant';
+        $redirectUri = (new GdtAccountService())->getRedirectUri();
 
         $url = 'https://developers.e.qq.com/oauth/authorize?';
         $url .= http_build_query([
             'client_id' => $appId,
+            'state'     => $appId,
             'redirect_uri' => $redirectUri
         ]);
         return $url;

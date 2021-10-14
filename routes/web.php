@@ -50,3 +50,6 @@ $router->group([
         $router->post('callback', '\\App\Common\Controllers\Admin\ConvertCallbackController@callback');
     });
 });
+
+// 测试
+$router->post('test', 'TestController@test');
