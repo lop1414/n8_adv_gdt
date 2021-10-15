@@ -5,6 +5,7 @@ namespace App\Services\Gdt;
 use App\Common\Enums\StatusEnum;
 use App\Common\Services\BaseService;
 use App\Common\Tools\CustomException;
+use App\Models\Gdt\GdtAccountModel;
 use App\Sdks\Gdt\Gdt;
 
 class GdtService extends BaseService
@@ -98,16 +99,6 @@ class GdtService extends BaseService
         return $datetime > $gdtAccount->fail_at;
     }
 
-    /**
-     * @param $accountId
-     * @return mixed
-     * @throws CustomException
-     * 获取账户信息
-     */
-    public function getAccountInfo($accountId){
-        $this->setAccessToken();
-        return $this->sdk->getAccountInfo($accountId);
-    }
 
     /**
      * @param array $accountIds
@@ -115,8 +106,8 @@ class GdtService extends BaseService
      * 获取账号组
      */
     public function getAccountGroup(array $accountIds = []){
-        $ksAccountModel = new GdtAccountModel();
-        $builder = $ksAccountModel->where('status', StatusEnum::ENABLE);
+        $gdtAccountModel = new GdtAccountModel();
+        $builder = $gdtAccountModel->where('status', StatusEnum::ENABLE);
 
         if(!empty($accountIds)){
             $accountIdsStr = implode("','", $accountIds);
@@ -167,17 +158,17 @@ class GdtService extends BaseService
             if(empty($v['req']['param'])){
                 continue;
             }
-            $reqParam = json_decode($v['req']['param'], true);
+            $reqParam = $v['req']['param'];
 
             $totalPage = 1;
-            if(!empty($v['data']['total_count'])){
-                $totalPage = ceil($v['data']['total_count'] / $pageSize);
+            if(!empty($v['data']['page_info']['total_page'])){
+                $totalPage = $v['data']['page_info']['total_page'];
             }
-            $advertiserId = $reqParam['advertiser_id'] ?? 0;
+            $accountId = $reqParam['account_id'] ?? 0;
 
-            if($advertiserId > 0 && $totalPage > 1){
+            if($accountId > 0 && $totalPage > 1){
                 for($i = 2; $i <= $totalPage; $i++){
-                    $more[$i][] = $accountMap[$advertiserId];
+                    $more[$i][] = $accountMap[$accountId];
                 }
             }
         }
@@ -194,14 +185,13 @@ class GdtService extends BaseService
         // 数据过滤
         $list = [];
         foreach($res as $v){
-            if(empty($v['data']['details']) || empty($v['req']['param'])){
+            if(empty($v['data']['list']) || empty($v['req']['param'])){
                 continue;
             }
-            $reqParam = json_decode($v['req']['param'], true);
+            $reqParam = $v['req']['param'];
 
-            foreach($v['data']['details'] as $item){
-                $item['advertiser_id'] = $reqParam['advertiser_id'];
-                $item['account_id'] = $reqParam['advertiser_id'];
+            foreach($v['data']['list'] as $item){
+                $item['account_id'] = $reqParam['account_id'];
                 $list[] = $item;
             }
         }

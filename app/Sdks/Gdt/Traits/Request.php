@@ -204,7 +204,7 @@ trait Request
         $chunkSize = $this->getMultiChunkSize();
         $chunks = array_chunk($curlOptions, $chunkSize);
 
-        Functions::consoleDump("ks multi public chuck size({$chunkSize})");
+        Functions::consoleDump("gdt multi public chuck size({$chunkSize})");
         $i = 1;
 
         $response = [];
@@ -236,8 +236,8 @@ trait Request
 
                 continue;
             }
-
             $result = json_decode($v['result'], true);
+
             if(!isset($result['code']) || $result['code'] != 0){
                 // 错误提示
                 $errorMessage = $result['msg'] ?? '并发请求错误';
@@ -279,10 +279,13 @@ trait Request
         foreach($curlOptions as $i => $curlOption){
             // 默认值
             $url = $curlOption['url'];
-            $param = json_encode($curlOption['param']) ?? '';
             $method = $curlOption['method'] ?? 'GET';
             $header = $curlOption['header'] ?? [];
             $option = $curlOption['option'] ?? [];
+            $param = $curlOption['param'];
+            if($method != 'GET'){
+                $param = json_encode($curlOption['param']) ?? '';
+            }
             // 构造句柄
             $ch = $this->buildCurl($url, $param, $method, $header, $option);
 

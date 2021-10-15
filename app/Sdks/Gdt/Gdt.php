@@ -6,6 +6,8 @@ namespace App\Sdks\Gdt;
 use App\Sdks\Gdt\Traits\AccessToken;
 use App\Sdks\Gdt\Traits\Account;
 use App\Sdks\Gdt\Traits\App;
+use App\Sdks\Gdt\Traits\Campaign;
+use App\Sdks\Gdt\Traits\Multi;
 use App\Sdks\Gdt\Traits\Request;
 
 class Gdt
@@ -15,6 +17,9 @@ class Gdt
     use AccessToken;
     use Request;
     use Account;
+    use Multi;
+    use Campaign;
+
 
     /**
      * 公共接口地址
