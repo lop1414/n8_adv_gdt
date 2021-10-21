@@ -5,6 +5,7 @@ namespace App\Sdks\Gdt;
 
 use App\Sdks\Gdt\Traits\AccessToken;
 use App\Sdks\Gdt\Traits\Account;
+use App\Sdks\Gdt\Traits\Adgroup;
 use App\Sdks\Gdt\Traits\App;
 use App\Sdks\Gdt\Traits\Campaign;
 use App\Sdks\Gdt\Traits\Multi;
@@ -19,6 +20,7 @@ class Gdt
     use Account;
     use Multi;
     use Campaign;
+    use Adgroup;
 
 
     /**
