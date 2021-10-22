@@ -11,7 +11,7 @@ use App\Sdks\Gdt\Gdt;
 class GdtService extends BaseService
 {
     /**
-     * @var
+     * @var Gdt
      */
     public $sdk;
 

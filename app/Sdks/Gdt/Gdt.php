@@ -8,6 +8,8 @@ use App\Sdks\Gdt\Traits\Account;
 use App\Sdks\Gdt\Traits\Adgroup;
 use App\Sdks\Gdt\Traits\App;
 use App\Sdks\Gdt\Traits\Campaign;
+use App\Sdks\Gdt\Traits\Creative;
+use App\Sdks\Gdt\Traits\Image;
 use App\Sdks\Gdt\Traits\Multi;
 use App\Sdks\Gdt\Traits\Request;
 
@@ -21,6 +23,8 @@ class Gdt
     use Multi;
     use Campaign;
     use Adgroup;
+    use Creative;
+    use Image;
 
 
     /**
