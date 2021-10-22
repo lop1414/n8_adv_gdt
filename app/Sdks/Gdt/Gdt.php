@@ -5,6 +5,7 @@ namespace App\Sdks\Gdt;
 
 use App\Sdks\Gdt\Traits\AccessToken;
 use App\Sdks\Gdt\Traits\Account;
+use App\Sdks\Gdt\Traits\Ad;
 use App\Sdks\Gdt\Traits\Adgroup;
 use App\Sdks\Gdt\Traits\App;
 use App\Sdks\Gdt\Traits\Campaign;
@@ -25,6 +26,7 @@ class Gdt
     use Adgroup;
     use Creative;
     use Image;
+    use Ad;
 
 
     /**
