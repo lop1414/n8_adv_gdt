@@ -9,6 +9,7 @@ use App\Sdks\Gdt\Traits\Ad;
 use App\Sdks\Gdt\Traits\Adgroup;
 use App\Sdks\Gdt\Traits\App;
 use App\Sdks\Gdt\Traits\Campaign;
+use App\Sdks\Gdt\Traits\Conversion;
 use App\Sdks\Gdt\Traits\Creative;
 use App\Sdks\Gdt\Traits\Image;
 use App\Sdks\Gdt\Traits\Multi;
@@ -27,6 +28,7 @@ class Gdt
     use Creative;
     use Image;
     use Ad;
+    use Conversion;
 
 
     /**
