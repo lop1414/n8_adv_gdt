@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Common\Console\Queue\QueueClickCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -13,7 +14,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+
+        // 队列
+        QueueClickCommand::class,
     ];
 
     /**
@@ -24,6 +27,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        //
+        // 队列
+        $schedule->command('queue:click')->cron('* * * * *');
     }
 }

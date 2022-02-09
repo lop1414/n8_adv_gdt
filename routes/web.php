@@ -51,5 +51,10 @@ $router->group([
     });
 });
 
+$router->group(['middleware' => ['access_control_allow_origin']], function () use ($router) {
+    // 点击
+    $router->get('front/click', 'Front\AdvClickController@index');
+});
+
 // 测试
 $router->post('test', 'TestController@test');
