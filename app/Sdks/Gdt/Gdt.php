@@ -53,7 +53,6 @@ class Gdt
      * 获取授权回调地址
      */
     public function getAuthUrl($appId,$redirectUri){
-
         $url = 'https://developers.e.qq.com/oauth/authorize?';
         $url .= http_build_query([
             'client_id' => $appId,

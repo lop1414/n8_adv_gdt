@@ -56,5 +56,8 @@ $router->group(['middleware' => ['access_control_allow_origin']], function () us
     $router->get('front/click', 'Front\AdvClickController@index');
 });
 
+//广点通授权回调
+$router->get('front/gdt/grant', 'Front\Gdt\IndexController@grant');
+
 // 测试
 $router->post('test', 'TestController@test');
