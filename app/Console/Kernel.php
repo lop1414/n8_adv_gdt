@@ -77,10 +77,10 @@ class Kernel extends ConsoleKernel
             $schedule->command('gdt:sync_ad --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('35-40 2 * * *');
 
             // 广点通广告创意同步
-            $schedule->command('gdt:sync_creative --update_date=today')->cron('*/2 * * * *');
-            $schedule->command('gdt:sync_creative --update_date=today --is_deleted=1')->cron('* */1 * * *');
-            $schedule->command('gdt:sync_creative --update_date=yesterday --key_suffix=yesterday')->cron('25-30 1 * * *');
-            $schedule->command('gdt:sync_creative --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('25-30 2 * * *');
+            $schedule->command('gdt:sync_ad_creative --update_date=today')->cron('*/2 * * * *');
+            $schedule->command('gdt:sync_ad_creative --update_date=today --is_deleted=1')->cron('* */1 * * *');
+            $schedule->command('gdt:sync_ad_creative --update_date=yesterday --key_suffix=yesterday')->cron('25-30 1 * * *');
+            $schedule->command('gdt:sync_ad_creative --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('25-30 2 * * *');
 
 //            15224718
         }
