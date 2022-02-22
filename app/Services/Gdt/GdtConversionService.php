@@ -6,7 +6,6 @@ use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
 use App\Models\Gdt\GdtAccountImageModel;
 use App\Models\Gdt\GdtConversionModel;
-use App\Models\Gdt\GdtImageModel;
 
 class GdtConversionService extends GdtService
 {
@@ -33,47 +32,22 @@ class GdtConversionService extends GdtService
     }
 
     /**
-     * @param array $option
+     * @param array $param
      * @return bool
      * @throws CustomException
      * 同步
      */
-    public function sync($option = []){
+    public function sync($param = []){
         ini_set('memory_limit', '2048M');
 
-        $accountIds = [];
-        // 账户id过滤
-        if(!empty($option['account_ids'])){
-            $accountIds = $option['account_ids'];
-        }
-
-        $param = [];
-        if(!empty($option['date'])){
-            $date =  Functions::getDate($option['date']);
-            $param['filtering'] = [
-                [
-                    'field' => 'last_modified_time',
-                    'operator' => 'GREATER_EQUALS',
-                    'values'   => [strtotime($date .' 00:00:00')]
-                ]
-            ];
-        }
-
-        if(!empty($option['ids'])){
-            $param['filtering'][] = [
-                'field' => 'image_id',
-                'operator' => 'IN',
-                'values'   => $option['ids']
-            ];
-        }
-
-        $accountGroup = $this->getAccountGroup($accountIds);
+        $accountGroup = $this->getAccountGroup($param['account_ids']);
 
         $t = microtime(1);
 
         $pageSize = 10;
         foreach($accountGroup as $g){
             $conversions = $this->multiGetPageList($g, $pageSize, $param);
+            dd($conversions);
             Functions::consoleDump('count:'. count($conversions));
 
             // 保存

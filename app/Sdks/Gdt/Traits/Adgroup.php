@@ -26,6 +26,9 @@ trait Adgroup
                     'smart_bid_type','smart_cost_cap','marketing_scene','custom_adgroup_tag'
             ];
         }
+
+        $param = $this->filterParam($param);
+
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
     }
 

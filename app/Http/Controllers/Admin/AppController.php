@@ -6,7 +6,9 @@ use App\Common\Controllers\Admin\AdminController;
 use App\Common\Enums\StatusEnum;
 use App\Common\Tools\CustomException;
 use App\Models\AppModel;
+use App\Sdks\Gdt\Gdt;
 use App\Services\Gdt\GdtAccountService;
+use Illuminate\Http\Request;
 
 
 class AppController extends AdminController
@@ -21,18 +23,6 @@ class AppController extends AdminController
         parent::__construct();
     }
 
-    public function getAuthUrl($appId){
-        $redirectUri = (new GdtAccountService())->getRedirectUri();
-
-        $url = 'https://developers.e.qq.com/oauth/authorize?';
-        $url .= http_build_query([
-            'client_id' => $appId,
-            'state'     => $appId,
-            'redirect_uri' => $redirectUri
-        ]);
-        return $url;
-    }
-
 
     /**
      * 分页列表预处理
@@ -41,8 +31,10 @@ class AppController extends AdminController
         parent::selectPrepare();
 
         $this->curdService->selectQueryAfter(function(){
+            $gdt = new Gdt();
+            $redirectUri = (new GdtAccountService())->getRedirectUri();
             foreach ($this->curdService->responseData['list'] as $item){
-                $item->auth_url = $this->getAuthUrl($item['app_id']);
+                $item->auth_url = $gdt->getAuthUrl($item['app_id'],$redirectUri);
             }
         });
     }
@@ -79,5 +71,11 @@ class AppController extends AdminController
             $this->model->existWithoutSelf('name',$this->curdService->handleData['name'],$this->curdService->handleData['id']);
             $this->model->existWithoutSelf('app_id',$this->curdService->handleData['app_id'],$this->curdService->handleData['id']);
         });
+    }
+
+
+    public function syncAccount(Request $request){
+        $requestData = $request->all();
+
     }
 }

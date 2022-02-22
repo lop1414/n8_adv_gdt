@@ -44,4 +44,62 @@ class Gdt
     public function getUrl($uri){
         return self::BASE_URL .'/'. ltrim($uri, '/');
     }
+
+
+    /**
+     * @param $appId
+     * @param $redirectUri
+     * @return string
+     * 获取授权回调地址
+     */
+    public function getAuthUrl($appId,$redirectUri){
+
+        $url = 'https://developers.e.qq.com/oauth/authorize?';
+        $url .= http_build_query([
+            'client_id' => $appId,
+            'state'     => $appId,
+            'redirect_uri' => $redirectUri
+        ]);
+        return $url;
+    }
+
+
+    /**
+     * @param $param
+     * @return mixed
+     * 过滤请求参数
+     */
+    public function filterParam($param){
+
+        // 更新时间
+        if(!empty($param['update_date'])){
+            $param['filtering'] = [
+                [
+                    'field' => 'last_modified_time',
+                    'operator' => 'GREATER_EQUALS',
+                    'values'   => [$param['update_date']]
+                ]
+            ];
+            unset($param['update_date']);
+        }
+
+        // 状态
+        if(!empty($param['status'])){
+            $param['filtering'] = [
+                [
+                    'field' => 'status',
+                    'operator' => 'EQUALS',
+                    'values'   => [$param['status']]
+                ]
+            ];
+            unset($param['status']);
+        }
+
+        //是否已删除
+        if(!empty($param['is_deleted'])){
+            $param['is_deleted'] = true;
+        }
+
+        return $param;
+    }
 }

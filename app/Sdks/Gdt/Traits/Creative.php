@@ -31,6 +31,9 @@ trait Creative
                 'app_gift_pack_code','enable_breakthrough_siteset','creative_template_version_type'
             ];
         }
+
+        $param = $this->filterParam($param);
+
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
     }
 

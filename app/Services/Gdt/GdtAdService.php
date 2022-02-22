@@ -31,31 +31,14 @@ class GdtAdService extends GdtService
     }
 
     /**
-     * @param array $option
+     * @param array $param
      * @return bool
      * @throws CustomException
      * 同步
      */
-    public function sync($option = []){
-        $accountIds = [];
-        // 账户id过滤
-        if(!empty($option['account_ids'])){
-            $accountIds = $option['account_ids'];
-        }
+    public function sync($param = []){
 
-        $param = [];
-        if(!empty($option['date'])){
-            $date =  Functions::getDate($option['date']);
-            $param['filtering'] = [
-                [
-                    'field' => 'last_modified_time',
-                    'operator' => 'GREATER_EQUALS',
-                    'values'   => [strtotime($date .' 00:00:00')]
-                ]
-            ];
-        }
-
-        $accountGroup = $this->getAccountGroup($accountIds);
+        $accountGroup = $this->getAccountGroup($param['account_ids']);
 
         $t = microtime(1);
 

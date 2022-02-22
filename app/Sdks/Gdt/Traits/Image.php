@@ -23,6 +23,19 @@ trait Image
             ];
         }
 
+        if(!empty($param['ids'])){
+            $param['filtering'][] = [
+                [
+                    'field' => 'image_id',
+                    'operator' => 'IN',
+                    'values'   => $param['ids']
+                ]
+            ];
+            unset($param['ids']);
+        }
+
+        $param = $this->filterParam($param);
+
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
     }
 }

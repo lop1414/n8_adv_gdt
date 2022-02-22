@@ -24,6 +24,8 @@ trait Conversion
             ];
         }
 
+        $param = $this->filterParam($param);
+
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
     }
 }

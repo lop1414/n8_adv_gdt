@@ -17,6 +17,17 @@ trait Campaign
     public function multiGetCampaignList(array $accounts, $page = 1, $pageSize = 10, $param = []){
         $url = $this->getUrl('/v1.3/campaigns/get');
 
+
+        if(!isset($param['fields'])){
+            $param['fields'] =  [
+                'campaign_id','campaign_name','configured_status','campaign_type',
+                'promoted_object_type','daily_budget','total_budget','created_time',
+                'last_modified_time','speed_mode','is_deleted'
+            ];
+        }
+
+        $param = $this->filterParam($param);
+
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
     }
 

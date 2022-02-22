@@ -90,38 +90,11 @@ class TaskGdtSyncService extends TaskGdtService
      * 执行单个子任务
      */
     public function runSub($subTask){
-        if($this->syncType == GdtSyncTypeEnum::VIDEO){
-            $this->syncVideo($subTask);
-        }else{
-            throw new CustomException([
-                'code' => 'NOT_HANDLE_FOR_SYNC_TYPE',
-                'message' => '该同步类型无对应处理',
-            ]);
-        }
-
-        return true;
+        throw new CustomException([
+            'code' => 'NOT_HANDLE_FOR_SYNC_TYPE',
+            'message' => '该同步类型无对应处理',
+        ]);
     }
 
-    /**
-     * @param $subTask
-     * @return bool
-     * @throws CustomException
-     * 同步视频
-     */
-    private function syncVideo($subTask){
-        $ksVideoService = new GdtVideoService($subTask->app_id);
 
-        $option = [
-            'account_ids' => [$subTask->account_id],
-        ];
-
-        // 筛选视频id
-        if(!empty($subTask->extends->video_id)){
-            $option['ids'] = [$subTask->extends->video_id];
-        }
-
-        $ksVideoService->sync($option);
-
-        return true;
-    }
 }

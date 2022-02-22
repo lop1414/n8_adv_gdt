@@ -28,7 +28,6 @@ CREATE TABLE `gdt_ads` (
   `campaign_id` varchar(255) NOT NULL COMMENT '计划id',
   `adgroup_id` varchar(255) NOT NULL COMMENT '广告组 id',
   `adcreative_id` varchar(255) NOT NULL COMMENT '广告创意 id',
-  `adcreative_template_id` varchar(50) NOT NULL COMMENT '创意形式 id',
   `configured_status` varchar(50) NOT NULL COMMENT '客户设置的状态',
   `system_status` varchar(50) NOT NULL COMMENT '系统状态',
   `audit_spec` text COMMENT '多版位的审核结果信息',

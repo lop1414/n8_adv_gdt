@@ -31,34 +31,14 @@ class GdtCampaignService extends GdtService
     }
 
     /**
-     * @param array $option
+     * @param array $param
      * @return bool
      * @throws CustomException
      * 同步
      */
-    public function sync($option = []){
-        $accountIds = [];
-        // 账户id过滤
-        if(!empty($option['account_ids'])){
-            $accountIds = $option['account_ids'];
-        }
+    public function sync($param = []){
 
-        $param = [
-            'fields' => ['campaign_id','campaign_name','configured_status','campaign_type','promoted_object_type','daily_budget','total_budget','created_time','last_modified_time','speed_mode','is_deleted']
-        ];
-        if(!empty($option['date'])){
-            $date =  Functions::getDate($option['date']);
-            $param['filtering'] = [
-                [
-                    'field' => 'last_modified_time',
-                    'operator' => 'GREATER_EQUALS',
-                    'values'   => [strtotime($date .' 00:00:00')]
-                ]
-            ];
-        }
-
-
-        $accountGroup = $this->getAccountGroup($accountIds);
+        $accountGroup = $this->getAccountGroup($param['account_ids']);
 
         $t = microtime(1);
 
@@ -66,8 +46,7 @@ class GdtCampaignService extends GdtService
         foreach($accountGroup as $g){
             $campaigns = $this->multiGetPageList($g, $pageSize, $param);
 
-            Functions::consoleDump('count:'. count($campaigns));
-
+            Functions::consoleDump('count:'. count($campaigns)."\n");
 
             // 保存
             foreach($campaigns as $campaign) {

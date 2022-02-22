@@ -67,4 +67,22 @@ class GdtAdgroupModel extends GdtModel
     public function channel_unit(){
         return $this->hasOne('App\Models\ChannelUnitModel', 'adgroup_id', 'id');
     }
+
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * 关联广告组扩展模型 一对一
+     */
+    public function gdt_adgroup_extends(){
+        return $this->hasOne('App\Models\Gdt\GdtAdgroupExtendModel', 'adgroup_id', 'id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * 关联模型 广点通转化归因 一对一
+     */
+    public function gdt_conversion(){
+        return $this->hasOne('App\Models\Gdt\GdtConversionModel', 'id', 'conversion_id');
+    }
 }

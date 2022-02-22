@@ -41,9 +41,8 @@ trait AccessToken
     }
 
 
-    public function getOauthAccessToken($appId,$secret,$authCode){
+    public function getOauthAccessToken($appId,$secret,$authCode,$redirectUri){
         $url = $this->getUrl('/oauth/token');
-        $redirectUri = (new GdtAccountService())->getRedirectUri();
 
         $param = [
             'client_id'     => $appId,
