@@ -46,6 +46,6 @@ trait Account
             'page'      => $page,
             'page_size' => 100
         ];
-        return $this->authRequest($url, $param, 'GET');
+        return $this->authRequest($url, $param);
     }
 }
