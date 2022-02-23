@@ -72,11 +72,12 @@ class Gdt
 
         // 更新时间
         if(!empty($param['update_date'])){
+            $date = strtotime($param['update_date'] .' 00:00:00');
             $param['filtering'] = [
                 [
                     'field' => 'last_modified_time',
                     'operator' => 'GREATER_EQUALS',
-                    'values'   => [$param['update_date']]
+                    'values'   => [$date]
                 ]
             ];
             unset($param['update_date']);

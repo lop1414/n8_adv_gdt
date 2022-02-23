@@ -14,6 +14,7 @@ class GdtAdgroupService extends GdtService
      */
     public function __construct($appId = ''){
         parent::__construct($appId);
+        $this->model = GdtAdgroupModel::class;
     }
 
 
@@ -37,6 +38,8 @@ class GdtAdgroupService extends GdtService
      * 同步
      */
     public function sync($param = []){
+        // 并发分片大小
+        $this->setSdkMultiChunkSize($param);
 
         $accountGroup = $this->getAccountGroup($param['account_ids']);
 
@@ -49,54 +52,24 @@ class GdtAdgroupService extends GdtService
             Functions::consoleDump('count:'. count($adgroups));
 
             // 保存
+            $data = [];
             foreach($adgroups as $adgroup) {
-                $this->save($adgroup);
+                $adgroup['extends'] = json_encode($adgroup);
+                $adgroup['site_set'] = json_encode($adgroup['site_set']);
+                $adgroup['id'] = $adgroup['adgroup_id'];
+                $adgroup['name'] = $adgroup['adgroup_name'];
+                $adgroup['bid_mode'] = $adgroup['bid_mode'] ?? '';
+                $adgroup['created_time'] = date('Y-m-d H:i:s',$adgroup['created_time']);
+                $adgroup['last_modified_time'] = date('Y-m-d H:i:s',$adgroup['last_modified_time']);
+                $adgroup['created_at'] = $adgroup['updated_at'] =  date('Y-m-d H:i:s');
+                $data[] = $adgroup;
             }
+            $this->chunkInsertOrUpdate($data,true);
         }
 
         $t = microtime(1) - $t;
         var_dump($t);
 
         return true;
-    }
-
-
-    /**
-     * @param $adgroup
-     * @return bool
-     * 保存
-     */
-    public function save($adgroup){
-        $gdtAdgroupModel = new GdtAdgroupModel();
-        $gdtAdgroup = $gdtAdgroupModel->where('id', $adgroup['adgroup_id'])->first();
-
-        if(empty($gdtAdgroup)){
-            $gdtAdgroup = new GdtAdgroupModel();
-        }
-
-        $gdtAdgroup->id = $adgroup['adgroup_id'];
-        $gdtAdgroup->name = $adgroup['adgroup_name'];
-        $gdtAdgroup->account_id = $adgroup['account_id'];
-        $gdtAdgroup->campaign_id = $adgroup['campaign_id'];
-        $gdtAdgroup->site_set = $adgroup['site_set'];
-        $gdtAdgroup->optimization_goal = $adgroup['optimization_goal'];
-        $gdtAdgroup->bid_mode = $adgroup['bid_mode'] ?? '';
-        $gdtAdgroup->bid_amount = $adgroup['bid_amount'];
-        $gdtAdgroup->daily_budget = $adgroup['daily_budget'];
-        $gdtAdgroup->configured_status = $adgroup['configured_status'];
-        $gdtAdgroup->bid_strategy = $adgroup['bid_strategy'];
-        $gdtAdgroup->auto_audience = $adgroup['auto_audience'];
-        $gdtAdgroup->conversion_id = $adgroup['conversion_id'];
-        $gdtAdgroup->system_status = $adgroup['system_status'];
-        $gdtAdgroup->status = $adgroup['status'];
-        $gdtAdgroup->smart_bid_type = $adgroup['smart_bid_type'];
-        $gdtAdgroup->is_deleted = $adgroup['is_deleted'];
-        $gdtAdgroup->is_deleted = $adgroup['is_deleted'];
-        $gdtAdgroup->created_time = date('Y-m-d H:i:s',$adgroup['created_time']);
-        $gdtAdgroup->last_modified_time = date('Y-m-d H:i:s',$adgroup['last_modified_time']);
-        $gdtAdgroup->extends = $adgroup;
-        $ret = $gdtAdgroup->save();
-
-        return $ret;
     }
 }

@@ -38,7 +38,8 @@ class GdtImageService extends GdtService
      * 同步
      */
     public function sync($param = []){
-        ini_set('memory_limit', '2048M');
+        // 并发分片大小
+        $this->setSdkMultiChunkSize($param);
 
         $accountGroup = $this->getAccountGroup($param['account_ids']);
 
@@ -59,6 +60,8 @@ class GdtImageService extends GdtService
 
         return true;
     }
+
+
 
     /**
      * @param $img

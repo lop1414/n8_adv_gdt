@@ -7,6 +7,13 @@ use App\Common\Models\BaseModel;
 
 class GdtModel extends BaseModel
 {
+
+    /**
+     * @var array
+     * 批量更新忽略字段
+     */
+    protected $updateIgnoreFields = ['created_at'];
+
     /**
      * @param $query
      * @return mixed

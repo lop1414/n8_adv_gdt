@@ -14,6 +14,7 @@ class GdtAdCreativeService extends GdtService
      */
     public function __construct($appId = ''){
         parent::__construct($appId);
+        $this->model = GdtAdcreativeModel::class;
     }
 
 
@@ -38,6 +39,9 @@ class GdtAdCreativeService extends GdtService
      */
     public function sync($param = []){
 
+        // 并发分片大小
+        $this->setSdkMultiChunkSize($param);
+
         $accountGroup = $this->getAccountGroup($param['account_ids']);
 
         $t = microtime(1);
@@ -46,61 +50,29 @@ class GdtAdCreativeService extends GdtService
         foreach($accountGroup as $g){
             $creatives = $this->multiGetPageList($g, $pageSize, $param);
             Functions::consoleDump('count:'. count($creatives));
-//dd($creatives);
 
             // 保存
-            foreach($creatives as $creative) {
-                $this->save($creative);
+            $data = [];
+            foreach($creatives as $creative){
+                $creative['extends'] = json_encode($creative);
+                $creative['site_set'] = json_encode($creative['site_set']);
+
+                $creative['id'] = $creative['adcreative_id'];
+                $creative['name'] = $creative['adcreative_name'];
+                $creative['link_name_type'] = $creative['link_name_type'] ?? '';
+                $creative['created_time'] = date('Y-m-d H:i:s',$creative['created_time']);
+                $creative['last_modified_time'] = date('Y-m-d H:i:s',$creative['last_modified_time']);
+
+                $creative['created_at'] = $creative['updated_at'] =  date('Y-m-d H:i:s');
+                $data[] = $creative;
             }
+
+            $this->chunkInsertOrUpdate($data,true);
         }
 
         $t = microtime(1) - $t;
         var_dump($t);
 
         return true;
-    }
-
-    /**
-     * @param $creative
-     * @return bool
-     * 保存
-     */
-    public function save($creative){
-        $gdtCreativeModel = new GdtAdcreativeModel();
-        $gdtCreative = $gdtCreativeModel->where('id', $creative['adcreative_id'])->first();
-
-        if(empty($gdtCreative)){
-            $gdtCreative = new GdtAdcreativeModel();
-        }
-
-        $gdtCreative->id = $creative['adcreative_id'];
-        $gdtCreative->name = $creative['adcreative_name'];
-        $gdtCreative->account_id = $creative['account_id'];
-        $gdtCreative->campaign_id = $creative['campaign_id'];
-        $gdtCreative->adcreative_template_id = $creative['adcreative_template_id'];
-        $gdtCreative->page_type = $creative['page_type'];
-        $gdtCreative->link_page_type = $creative['link_page_type'];
-        $gdtCreative->link_name_type = $creative['link_name_type'] ?? '';
-        $gdtCreative->conversion_target_type = $creative['conversion_target_type'];
-        $gdtCreative->site_set = $creative['site_set'];
-        $gdtCreative->automatic_site_enabled = $creative['automatic_site_enabled'];
-        $gdtCreative->promoted_object_type = $creative['promoted_object_type'];
-        $gdtCreative->promoted_object_id = $creative['promoted_object_id'];
-        $gdtCreative->is_deleted = $creative['is_deleted'];
-        $gdtCreative->is_dynamic_creative = $creative['is_dynamic_creative'];
-        $gdtCreative->component_id = $creative['component_id'];
-        $gdtCreative->enable_breakthrough_siteset = $creative['enable_breakthrough_siteset'];
-        $gdtCreative->creative_template_version_type = $creative['creative_template_version_type'];
-        $gdtCreative->created_time = date('Y-m-d H:i:s',$creative['created_time']);
-        $gdtCreative->last_modified_time = date('Y-m-d H:i:s',$creative['last_modified_time']);
-        $gdtCreative->extends = $creative;
-        $ret = $gdtCreative->save();
-
-        if($ret && isset($creative['adcreative_elements']['image'])){
-            // 添加关联关系
-            (new GdtImageService())->relationAccount($gdtCreative['account_id'],$creative['adcreative_elements']['image']);
-        }
-
-        return $ret;
     }
 }

@@ -14,6 +14,8 @@ class GdtCampaignService extends GdtService
      */
     public function __construct($appId = ''){
         parent::__construct($appId);
+        $this->model = GdtCampaignModel::class;
+
     }
 
 
@@ -38,20 +40,32 @@ class GdtCampaignService extends GdtService
      */
     public function sync($param = []){
 
+        // 并发分片大小
+        $this->setSdkMultiChunkSize($param);
+
         $accountGroup = $this->getAccountGroup($param['account_ids']);
 
         $t = microtime(1);
 
-        $pageSize = 1;
+        $pageSize = 100;
         foreach($accountGroup as $g){
             $campaigns = $this->multiGetPageList($g, $pageSize, $param);
 
             Functions::consoleDump('count:'. count($campaigns)."\n");
 
             // 保存
+            $data = [];
             foreach($campaigns as $campaign) {
-                $this->save($campaign);
+                $campaign['extends'] = json_encode($campaign);
+                $campaign['id'] = $campaign['campaign_id'];
+                $campaign['name'] = $campaign['campaign_name'];
+                $campaign['created_time'] = date('Y-m-d H:i:s',$campaign['created_time']);
+                $campaign['last_modified_time'] = date('Y-m-d H:i:s',$campaign['last_modified_time']);
+                $campaign['created_at'] = $campaign['updated_at'] =  date('Y-m-d H:i:s');
+                $data[] = $campaign;
             }
+            $this->chunkInsertOrUpdate($data,true);
+
         }
 
         $t = microtime(1) - $t;

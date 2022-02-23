@@ -3,7 +3,6 @@
 namespace App\Services\Gdt;
 
 use App\Common\Enums\StatusEnum;
-use App\Common\Helpers\Functions;
 use App\Common\Services\BaseService;
 use App\Common\Tools\CustomException;
 use App\Models\Gdt\GdtAccountModel;
@@ -206,5 +205,19 @@ class GdtService extends BaseService
      */
     public function multiGetPageListAfter($res){
         return $res;
+    }
+
+
+    /**
+     * @param $param
+     * @return bool
+     * 并发分片大小
+     */
+    public function setSdkMultiChunkSize($param){
+        if(!empty($param['multi_chunk_size'])){
+            $multiChunkSize = min(intval($param['multi_chunk_size']), 8);
+            $this->sdk->setMultiChunkSize($multiChunkSize);
+        }
+        return true;
     }
 }

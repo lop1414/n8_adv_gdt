@@ -14,6 +14,7 @@ class GdtAdService extends GdtService
      */
     public function __construct($appId = ''){
         parent::__construct($appId);
+        $this->model = GdtAdModel::class;
     }
 
 
@@ -37,6 +38,8 @@ class GdtAdService extends GdtService
      * 同步
      */
     public function sync($param = []){
+        // 并发分片大小
+        $this->setSdkMultiChunkSize($param);
 
         $accountGroup = $this->getAccountGroup($param['account_ids']);
 
@@ -47,45 +50,23 @@ class GdtAdService extends GdtService
             $ads = $this->multiGetPageList($g, $pageSize, $param);
             Functions::consoleDump('count:'. count($ads));
             // 保存
+            $data = [];
             foreach($ads as $ad) {
-                $this->save($ad);
+                $ad['extends'] = json_encode($ad);
+                $ad['audit_spec'] = json_encode($ad['audit_spec']);
+                $ad['id'] = $ad['ad_id'];
+                $ad['name'] = $ad['ad_name'];
+                $ad['created_time'] = date('Y-m-d H:i:s',$ad['created_time']);
+                $ad['last_modified_time'] = date('Y-m-d H:i:s',$ad['last_modified_time']);
+                $ad['created_at'] = $ad['updated_at'] =  date('Y-m-d H:i:s');
+                $data[] = $ad;
             }
+            $this->chunkInsertOrUpdate($data,true);
         }
 
         $t = microtime(1) - $t;
         var_dump($t);
 
         return true;
-    }
-
-    /**
-     * @param $ad
-     * @return bool
-     * 保存
-     */
-    public function save($ad){
-        $gdtAdModel = new GdtAdModel();
-        $gdtAd = $gdtAdModel->where('id', $ad['ad_id'])->first();
-
-        if(empty($gdtAd)){
-            $gdtAd = new GdtAdModel();
-        }
-
-        $gdtAd->id = $ad['ad_id'];
-        $gdtAd->name = $ad['ad_name'];
-        $gdtAd->account_id = $ad['account_id'];
-        $gdtAd->campaign_id = $ad['campaign_id'];
-        $gdtAd->adgroup_id = $ad['adgroup_id'];
-        $gdtAd->adcreative_id = $ad['adcreative_id'];
-        $gdtAd->configured_status = $ad['configured_status'];
-        $gdtAd->system_status = $ad['system_status'];
-        $gdtAd->audit_spec = $ad['audit_spec'];
-        $gdtAd->click_tracking_url = $ad['click_tracking_url'];
-        $gdtAd->is_deleted = $ad['is_deleted'];
-        $gdtAd->is_dynamic_creative = $ad['is_dynamic_creative'];
-        $gdtAd->created_time = date('Y-m-d H:i:s',$ad['created_time']);
-        $gdtAd->last_modified_time = date('Y-m-d H:i:s',$ad['last_modified_time']);
-        $ret = $gdtAd->save();
-        return $ret;
     }
 }

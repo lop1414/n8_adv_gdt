@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : 虚拟机 192.168.20.10
+ Source Server         : 虚拟机9.7.2
  Source Server Type    : MySQL
- Source Server Version : 50731
+ Source Server Version : 50732
  Source Host           : localhost:3306
  Source Schema         : n8_adv_gdt
 
  Target Server Type    : MySQL
- Target Server Version : 50731
+ Target Server Version : 50732
  File Encoding         : 65001
 
- Date: 21/10/2021 14:46:18
+ Date: 23/02/2022 10:22:15
 */
 
 SET NAMES utf8mb4;
@@ -32,13 +32,13 @@ CREATE TABLE `gdt_campaigns` (
   `daily_budget` int(11) DEFAULT '0' COMMENT '日预算',
   `is_deleted` varchar(50) NOT NULL DEFAULT '' COMMENT '是否已删除',
   `speed_mode` varchar(50) NOT NULL DEFAULT '' COMMENT '投放速度模式',
-  `create_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
+  `created_time` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `last_modified_time` timestamp NULL DEFAULT NULL COMMENT '最后修改时间',
   `created_at` timestamp NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` timestamp NULL DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `account_id` (`account_id`) USING BTREE,
-  KEY `create_time` (`create_time`) USING BTREE
+  KEY `create_time` (`created_time`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='广点通计划信息';
 
 SET FOREIGN_KEY_CHECKS = 1;
