@@ -92,6 +92,7 @@ class AdvClickService extends ClickService
                 $data['channel_id'] = 0;
             }
         }
+
         if(!empty($data['link'])){
             if($data['link'] == base64_encode(base64_decode($data['link']))){
                 $data['link'] = base64_decode($data['link']);
@@ -99,9 +100,11 @@ class AdvClickService extends ClickService
         }
 
         if(!empty($data['callback'])){
-                $data['callback'] = urldecode($data['callback']);
+            $data['callback'] = urldecode($data['callback']);
         }
 
+        $data['extends']['site_set_name'] = $data['site_set_name'] ?? '';
+        $data['extends']['model'] = $data['model'] ?? '';
         $data['click_at'] = $clickAt;
         return $data;
     }
@@ -114,15 +117,16 @@ class AdvClickService extends ClickService
     protected function create($data){
         $clickModel = new ClickModel();
         $clickModel->click_source = $data['click_source'] ?? '';
-        $clickModel->campaign_id = empty($data['campaign_id']) ? 0: $data['campaign_id'];
-        $clickModel->adgroup_id = empty($data['adgroup_id']) ? 0: $data['adgroup_id'];
-        $clickModel->ad_id = empty($data['ad_id']) ? 0: $data['ad_id'];
-        $clickModel->click_id = $data['click_id'];
+        $clickModel->campaign_id = $data['campaign_id'] ?? '';
+        $clickModel->adgroup_id = $data['adgroup_id'] ?? '';
+        $clickModel->ad_id = $data['ad_id'] ??'';
+        $clickModel->adv_click_id = $data['adv_click_id'];
         $clickModel->request_id = $data['request_id'];
         $clickModel->channel_id = $data['channel_id'] ?? 0;
+        $clickModel->encrypted_position_id = $data['encrypted_position_id'] ?? 0;
+        $clickModel->ad_platform_type = $data['ad_platform_type'] ?? '';
         $clickModel->muid = $data['muid'];
         $clickModel->android_id = $data['android_id'];
-        $clickModel->oaid = $data['oaid'];
         $clickModel->oaid_md5 = $data['oaid_md5'];
         $clickModel->os = $data['os'];
         $clickModel->ip = $data['ip'];
