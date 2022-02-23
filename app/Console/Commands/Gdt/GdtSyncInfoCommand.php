@@ -89,6 +89,7 @@ class GdtSyncInfoCommand extends BaseCommand
             case 'conversion':
                 echo "同步广点通转化归因\n";
                 //已删除的无法获取
+                //无法根据时间过滤获取
                 $service = new GdtConversionService();
                 break;
             default:
