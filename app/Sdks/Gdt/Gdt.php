@@ -64,6 +64,24 @@ class Gdt
 
 
     /**
+     * @param $url
+     * @param $param
+     * @return bool
+     * @throws \App\Common\Tools\CustomException
+     * 转化回传
+     */
+    public function callback($url,$param){
+        $header = [
+            'Content-Type: application/json',
+            'cache-control: no-cache',
+        ];
+
+        $this->publicRequest($url, $param, 'POST', $header);
+        return true;
+    }
+
+
+    /**
      * @param $param
      * @return mixed
      * 过滤请求参数

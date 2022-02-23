@@ -166,6 +166,7 @@ trait Request
 
         if($method == 'POST'){
             curl_setopt($ch, CURLOPT_POST, true);
+            $param = json_encode($param);
         }
 
         $timeout = $option['timeout'] ?? 30;
