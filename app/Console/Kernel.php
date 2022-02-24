@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Common\Console\Queue\QueueClickCommand;
 use App\Common\Helpers\Functions;
 use App\Console\Commands\Gdt\GdtSyncInfoCommand;
+use App\Console\Commands\Gdt\GdtSyncReportCommand;
 use App\Console\Commands\SyncChannelAdgroupCommand;
 use App\Console\Commands\Task\TaskGdtSyncCommand;
 use Illuminate\Console\Scheduling\Schedule;
@@ -26,6 +27,7 @@ class Kernel extends ConsoleKernel
 
         // 广点通
         GdtSyncInfoCommand::class,
+        GdtSyncReportCommand::class,
 
         // 同步渠道-广告组
         SyncChannelAdgroupCommand::class,
@@ -73,6 +75,16 @@ class Kernel extends ConsoleKernel
             $schedule->command('gdt:sync_info --type=_ad_creative --update_date=today --is_deleted=1')->cron('* */1 * * *');
             $schedule->command('gdt:sync_info --type=_ad_creative --update_date=yesterday --key_suffix=yesterday')->cron('25-30 1 * * *');
             $schedule->command('gdt:sync_info --type=_ad_creative --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('25-30 2 * * *');
+
+            // 广点通账户报表同步
+            $schedule->command('gdt:sync_report --type=account_by_day --date=today --has_history_cost=1 --key_suffix=has_history_cost')->cron('*/2 * * * *');
+            $schedule->command('gdt:sync_report --type=account_by_day --date=today')->cron('15 * * * *');
+            $schedule->command('gdt:sync_report --type=account_by_day --date=yesterday --key_suffix=yesterday')->cron('25-30 10 * * *');
+
+            // 广点通广告报表同步
+            $schedule->command('gdt:sync_report --type=ad_by_hour --date=today --run_by_account_cost=1 --multi_chunk_size=5')->cron('*/2 * * * *');
+            $schedule->command('gdt:sync_report --type=ad_by_hour --date=yesterday --key_suffix=yesterday')->cron('10-15 9 * * *');
+
         }
     }
 }

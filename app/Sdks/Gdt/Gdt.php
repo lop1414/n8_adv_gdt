@@ -13,6 +13,7 @@ use App\Sdks\Gdt\Traits\Conversion;
 use App\Sdks\Gdt\Traits\Creative;
 use App\Sdks\Gdt\Traits\Image;
 use App\Sdks\Gdt\Traits\Multi;
+use App\Sdks\Gdt\Traits\Report;
 use App\Sdks\Gdt\Traits\Request;
 
 class Gdt
@@ -29,6 +30,7 @@ class Gdt
     use Image;
     use Ad;
     use Conversion;
+    use Report;
 
 
     /**

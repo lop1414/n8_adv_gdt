@@ -5,8 +5,11 @@ namespace App\Services\Gdt;
 use App\Common\Enums\StatusEnum;
 use App\Common\Services\BaseService;
 use App\Common\Tools\CustomException;
+use App\Enums\Gdt\GdtAdStatusEnum;
 use App\Models\Gdt\GdtAccountModel;
+use App\Models\Gdt\Report\GdtAccountReportModel;
 use App\Sdks\Gdt\Gdt;
+use Illuminate\Support\Facades\DB;
 
 class GdtService extends BaseService
 {
@@ -219,5 +222,56 @@ class GdtService extends BaseService
             $this->sdk->setMultiChunkSize($multiChunkSize);
         }
         return true;
+    }
+
+
+    /**
+     * @return mixed
+     * 获取在跑账户id
+     */
+    public function getRunningAccountIds(){
+        // 在跑状态
+        $runningStatus = [
+            GdtAdStatusEnum::STATUS_ACTIVE,
+            GdtAdStatusEnum::STATUS_PART_ACTIVE,
+        ];
+        $runningStatusStr = implode("','", $runningStatus);
+
+        $gdtAccountModel = new GdtAccountModel();
+        $gdtAccountIds = $gdtAccountModel->whereRaw("
+            account_id IN (
+                SELECT account_id FROM gdt_adgroups
+                    WHERE `status` IN ('{$runningStatusStr}')
+                    GROUP BY account_id
+            )
+        ")->pluck('account_id');
+
+        return $gdtAccountIds->toArray();
+    }
+
+
+
+    /**
+     * @param $accountIds
+     * @return mixed
+     * 获取存在历史消耗账户
+     */
+    public function getHasHistoryCostAccount($accountIds){
+        $today = date('Y-m-d');
+        $startDate = date('Y-m-d', strtotime('-3 days', strtotime($today)));
+
+        $gdtAccountReportModel = new GdtAccountReportModel();
+        $builder = $gdtAccountReportModel->whereBetween('stat_datetime', ["{$startDate} 00:00:00", "{$today} 23:59:59"]);
+
+        if(!empty($accountIds)){
+            $builder->whereIn('account_id', $accountIds);
+        }
+
+        $report = $builder->groupBy('account_id')
+            ->orderBy('cost', 'DESC')
+            ->select(DB::raw("account_id, SUM(cost) cost"))
+            ->pluck('account_id');
+
+        return $report->toArray();
     }
 }

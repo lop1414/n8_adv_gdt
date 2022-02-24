@@ -5,11 +5,8 @@ namespace App\Console\Commands\Gdt;
 use App\Common\Console\BaseCommand;
 use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
-use App\Services\Gdt\GdtAdCreativeService;
-use App\Services\Gdt\GdtAdgroupService;
-use App\Services\Gdt\GdtAdService;
-use App\Services\Gdt\GdtCampaignService;
-use App\Services\Gdt\GdtConversionService;
+use App\Services\Gdt\Report\GdtAccountReportService;
+use App\Services\Gdt\Report\GdtAdReportService;
 
 class GdtSyncReportCommand extends BaseCommand
 {
@@ -17,7 +14,7 @@ class GdtSyncReportCommand extends BaseCommand
      * 命令行执行命令
      * @var string
      */
-    protected $signature = 'gdt:sync_report {--type=}  {--date=}  {--account_ids=} {--multi_chunk_size=} {--key_suffix=}';
+    protected $signature = 'gdt:sync_report {--type=}  {--date=}  {--account_ids=} {--multi_chunk_size=} {--key_suffix=} {--has_history_cost=}';
 
     /**
      * 命令描述
@@ -47,6 +44,9 @@ class GdtSyncReportCommand extends BaseCommand
         // 日期
         !empty($option['date']) && $param['date'] = Functions::getDate($option['date']);
 
+        // 历史消耗
+        !empty($option['has_history_cost']) && $param['has_history_cost'] = $option['has_history_cost'];
+
         // 账户id
         if(!empty($option['account_ids'])){
             $param['account_ids'] = explode(",", $option['account_ids']);
@@ -67,27 +67,13 @@ class GdtSyncReportCommand extends BaseCommand
 
     public function getServices($type){
         switch ($type){
-            case 'campaign':
-                echo "同步广点通推广计划\n";
-                $service = new GdtCampaignService();
+            case 'account_by_day':
+                echo "同步广点通账户日报表\n";
+                $service = new GdtAccountReportService();
                 break;
-            case 'adgroup':
-                echo "同步广点通广告组\n";
-                $service = new GdtAdgroupService();
-                break;
-            case 'ad_creative':
-                echo "同步广点通广告创意\n";
-                $service = new GdtAdCreativeService();
-                break;
-            case 'ad':
-                echo "同步广点通广告\n";
-                $service = new GdtAdService();
-                break;
-            case 'conversion':
-                echo "同步广点通转化归因\n";
-                //已删除的无法获取
-                //无法根据时间过滤获取
-                $service = new GdtConversionService();
+            case 'ad_by_hour':
+                echo "同步广点通广告小时报表\n";
+                $service = new GdtAdReportService();
                 break;
             default:
                 throw new CustomException([
