@@ -49,4 +49,20 @@ class GdtModel extends BaseModel
         ");
         return $query;
     }
+
+
+
+    /**
+     * @return
+     * 关联广告组扩展模型 一对一
+     */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * 关联广告组扩展模型 多对一
+     */
+    public function gdt_account(){
+        return $this->belongsTo('App\Models\Gdt\GdtAccountModel', 'account_id', 'account_id');
+    }
+
+
 }

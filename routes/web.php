@@ -29,6 +29,38 @@ $router->group([
         $router->post('disable', 'Admin\AppController@disable');
     });
 
+    // 广点通
+    $router->group(['prefix' => 'gdt'], function () use ($router) {
+        // 账户
+        $router->group(['prefix' => 'account'], function () use ($router) {
+            $router->post('select', 'Admin\Gdt\AccountController@select');
+            $router->post('get', 'Admin\Gdt\AccountController@get');
+            $router->post('read', 'Admin\Gdt\AccountController@read');
+            $router->post('update', 'Admin\Gdt\AccountController@update');
+            $router->post('enable', 'Admin\Gdt\AccountController@enable');
+            $router->post('disable', 'Admin\Gdt\AccountController@disable');
+            $router->post('delete', 'Admin\Gdt\AccountController@delete');
+            $router->post('batch_enable', 'Admin\Gdt\AccountController@batchEnable');
+            $router->post('batch_disable', 'Admin\Gdt\AccountController@batchDisable');
+            $router->post('batch_update_admin', 'Admin\Gdt\AccountController@batchUpdateAdmin');
+        });
+
+        // 广告
+        $router->group(['prefix' => 'adgroup'], function () use ($router) {
+            $router->post('select', 'Admin\Gdt\AdgroupController@select');
+            $router->post('read', 'Admin\Gdt\AdgroupController@read');
+        });
+
+        // 广告扩展
+        $router->group(['prefix' => 'adgroup_extend'], function () use ($router) {
+            $router->post('create', 'Admin\Gdt\AdgroupExtendController@create');
+            $router->post('update', 'Admin\Gdt\AdgroupExtendController@update');
+            $router->post('select', 'Admin\Gdt\AdgroupExtendController@select');
+            $router->post('read', 'Admin\Gdt\AdgroupExtendController@read');
+            $router->post('batch_update', 'Admin\Gdt\AdgroupExtendController@batchUpdate');
+        });
+    });
+
 
     // 回传策略
     $router->group(['prefix' => 'convert_callback_strategy'], function () use ($router) {
