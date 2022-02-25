@@ -56,25 +56,25 @@ class Kernel extends ConsoleKernel
 
             // 广点通推广计划同步
             $schedule->command('gdt:sync_info --type=campaign --update_date=today --multi_chunk_size=1')->cron('*/30 * * * *');
-            $schedule->command('gdt:sync_info --type=_campaign --update_date=today --multi_chunk_size=1 --is_deleted=1')->cron('* */1 * * *');
+            $schedule->command('gdt:sync_info --type=campaign --update_date=today --multi_chunk_size=1 --is_deleted=1')->cron('* */1 * * *');
 
             // 广点通广告组同步
-            $schedule->command('gdt:sync_info --type=_adgroup --update_date=today')->cron('*/2 * * * *');
-            $schedule->command('gdt:sync_info --type=_adgroup --update_date=today --is_deleted=1')->cron('* */1 * * *');
-            $schedule->command('gdt:sync_info --type=_adgroup --update_date=yesterday --key_suffix=yesterday')->cron('45-50 1 * * *');
-            $schedule->command('gdt:sync_info --type=_adgroup --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('45-50 2 * * *');
+            $schedule->command('gdt:sync_info --type=adgroup --update_date=today')->cron('*/2 * * * *');
+            $schedule->command('gdt:sync_info --type=adgroup --update_date=today --is_deleted=1')->cron('* */1 * * *');
+            $schedule->command('gdt:sync_info --type=adgroup --update_date=yesterday --key_suffix=yesterday')->cron('45-50 1 * * *');
+            $schedule->command('gdt:sync_info --type=adgroup --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('45-50 2 * * *');
 
             // 广点通广告同步
-            $schedule->command('gdt:sync_info --type=_ad --update_date=today')->cron('*/2 * * * *');
-            $schedule->command('gdt:sync_info --type=_ad --update_date=today --is_deleted=1')->cron('* */1 * * *');
-            $schedule->command('gdt:sync_info --type=_ad --update_date=yesterday --key_suffix=yesterday')->cron('35-40 1 * * *');
-            $schedule->command('gdt:sync_info --type=_ad --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('35-40 2 * * *');
+            $schedule->command('gdt:sync_info --type=ad --update_date=today')->cron('*/2 * * * *');
+            $schedule->command('gdt:sync_info --type=ad --update_date=today --is_deleted=1')->cron('* */1 * * *');
+            $schedule->command('gdt:sync_info --type=ad --update_date=yesterday --key_suffix=yesterday')->cron('35-40 1 * * *');
+            $schedule->command('gdt:sync_info --type=ad --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('35-40 2 * * *');
 
             // 广点通广告创意同步
-            $schedule->command('gdt:sync_info --type=_ad_creative --update_date=today')->cron('*/2 * * * *');
-            $schedule->command('gdt:sync_info --type=_ad_creative --update_date=today --is_deleted=1')->cron('* */1 * * *');
-            $schedule->command('gdt:sync_info --type=_ad_creative --update_date=yesterday --key_suffix=yesterday')->cron('25-30 1 * * *');
-            $schedule->command('gdt:sync_info --type=_ad_creative --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('25-30 2 * * *');
+            $schedule->command('gdt:sync_info --type=ad_creative --update_date=today')->cron('*/2 * * * *');
+            $schedule->command('gdt:sync_info --type=ad_creative --update_date=today --is_deleted=1')->cron('* */1 * * *');
+            $schedule->command('gdt:sync_info --type=ad_creative --update_date=yesterday --key_suffix=yesterday')->cron('25-30 1 * * *');
+            $schedule->command('gdt:sync_info --type=ad_creative --update_date=yesterday --key_suffix=yesterday --is_deleted=1')->cron('25-30 2 * * *');
 
             // 广点通账户报表同步
             $schedule->command('gdt:sync_report --type=account_by_day --date=today --has_history_cost=1 --key_suffix=has_history_cost')->cron('*/2 * * * *');
