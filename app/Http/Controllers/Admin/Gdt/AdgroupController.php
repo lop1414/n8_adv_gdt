@@ -31,6 +31,11 @@ class AdgroupController extends GdtController
 
         $this->curdService->selectQueryBefore(function(){
             $this->curdService->customBuilder(function($builder){
+                // 关键词
+                $keyword = $this->curdService->requestData['keyword'] ?? '';
+                if(!empty($keyword)){
+                    $builder->whereRaw("(adgroup_id LIKE '%{$keyword}%' OR name LIKE '%{$keyword}%')");
+                }
 
                 // 时间范围
                 $startDate = $this->curdService->requestData['start_date'] ?? date('Y-m-d');
