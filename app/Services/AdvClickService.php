@@ -104,7 +104,7 @@ class AdvClickService extends ClickService
         }
 
         $data['extends']['site_set_name'] = $data['site_set_name'] ?? '';
-        $data['extends']['model'] = $data['model'] ?? '';
+        $data['extends']['qz_gdt'] = $data['qz_gdt'] ?? '';
         $data['click_at'] = $clickAt;
         return $data;
     }
