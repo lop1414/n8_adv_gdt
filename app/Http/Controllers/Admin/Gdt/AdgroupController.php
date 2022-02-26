@@ -67,8 +67,15 @@ class AdgroupController extends GdtController
 
         $this->curdService->selectQueryAfter(function(){
             foreach($this->curdService->responseData['list'] as $v){
-                // 关联巨量账户
+                // 账户
                 $v->gdt_account;
+
+                // 广告组扩展
+                $v->gdt_adgroup_extends;
+                // 策略
+                $v->gdt_adgroup_extends->convert_callback_strategy;
+                // 策略组
+                $v->gdt_adgroup_extends->convert_callback_strategy_group;
 
                 // 关联报表
                 //$v->report = $v->ocean_creative_reports()->compute()->first();
