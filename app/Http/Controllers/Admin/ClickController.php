@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Common\Controllers\Admin\AdminController;
+use App\Common\Enums\ConvertTypeEnum;
 use App\Common\Models\ClickModel;
 use App\Common\Tools\CustomException;
 use App\Services\AdvConvertCallbackService;
@@ -74,7 +75,12 @@ class ClickController extends AdminController
             ]);
         }
 
-        $ret = $advConvertCallbackService->runCallback($click, $eventType,date('Y-m-d H:i:s'));
+        $payAmount = 0;
+        if($eventType == $eventTypeMap[ConvertTypeEnum::PAY]){
+            $payAmount = 0.1;
+        }
+
+        $ret = $advConvertCallbackService->runCallback($click, $eventType,date('Y-m-d H:i:s'),$payAmount);
 
         return $this->ret($ret);
     }
