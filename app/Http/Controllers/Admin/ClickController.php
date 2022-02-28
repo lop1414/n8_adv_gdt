@@ -6,6 +6,7 @@ use App\Common\Controllers\Admin\AdminController;
 use App\Common\Enums\ConvertTypeEnum;
 use App\Common\Models\ClickModel;
 use App\Common\Tools\CustomException;
+use App\Enums\Gdt\GdtCallbackObjectEnum;
 use App\Services\AdvConvertCallbackService;
 use Illuminate\Http\Request;
 
@@ -75,12 +76,18 @@ class ClickController extends AdminController
             ]);
         }
 
-        $payAmount = 0;
+        $actionParam = [
+            'product_id' =>  666666,
+            'product_name' =>  '测试数据-测试平台',
+            'object' =>  GdtCallbackObjectEnum::FIRST_PAY_NO_LIMIT,
+        ];
+
+        //付费金额
         if($eventType == $eventTypeMap[ConvertTypeEnum::PAY]){
-            $payAmount = 0.1;
+            $actionParam['value'] =  0.1;
         }
 
-        $ret = $advConvertCallbackService->runCallback($click, $eventType,date('Y-m-d H:i:s'),$payAmount);
+        $ret = (new AdvConvertCallbackService())->runCallback($click, $eventType,date('Y-m-d H:i:s'),$actionParam);
 
         return $this->ret($ret);
     }

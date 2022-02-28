@@ -2,9 +2,13 @@
 
 namespace App\Services;
 
+use App\Common\Enums\ConvertCallbackTimeEnum;
 use App\Common\Enums\ConvertTypeEnum;
+use App\Common\Enums\CpTypeEnums;
+use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
 use App\Common\Services\ConvertCallbackService;
+use App\Enums\Gdt\GdtCallbackObjectEnum;
 use App\Sdks\Gdt\Gdt;
 
 class AdvConvertCallbackService extends ConvertCallbackService
@@ -56,21 +60,36 @@ class AdvConvertCallbackService extends ConvertCallbackService
 
         $eventType = $eventTypeMap[$item->convert_type];
 
+        $actionParam = [];
+        //书籍信息
+        if(!empty($item->extends->convert->n8_union_user->cp_book_id)){
+            $actionParam['product_id'] =  $item->extends->convert->n8_union_user->cp_book_id;
+            $bookName = $item->extends->convert->n8_union_user->book_name;
+            $cpTypeName = $this->readCpTypeName($item->extends->convert->n8_union_user->cp_type);
+            $actionParam['product_name'] =  $bookName.'-'.$cpTypeName;
+        }
+
         //付费金额
-        $payAmount = 0;
-        if(!empty($payAmount)){
-            $payAmount =  $item->extends->amount;
+        if(!empty($item->extends->convert->amount)){
+            $actionParam['value'] =  $item->extends->convert->amount;
+        }
+
+        //上报方式
+        $actionParam['object'] = GdtCallbackObjectEnum::FIRST_PAY_NO_LIMIT;
+        if(!empty($item->extends->strategy->time_range)){
+            $timeRange =  $item->extends->strategy->time_range;
+            $actionParam['object'] = $this->getCallbackObjectParam($timeRange);
         }
 
         $eventTime = strtotime($item->convert_at);
-        $this->runCallback($item->click,$eventType,$eventTime,$payAmount);
+        $this->runCallback($item->click,$eventType,$eventTime,$actionParam);
 
         return true;
     }
 
 
 
-    public function runCallback($click,$actionType,$actionTime,$payAmount = 0){
+    public function runCallback($click,$actionType,$actionTime,$actionParam = []){
         $action = [
             'action_time' => strtotime($actionTime),
             'user_id' => [
@@ -82,10 +101,10 @@ class AdvConvertCallbackService extends ConvertCallbackService
             ],
             'action_type' => $actionType,
             'click_id' => $click->adv_click_id,
+            'action_param' => $actionParam
         ];
         $url = 'http://tracking.e.qq.com/conv';
 
-        !empty($payAmount) && $action['action_param'] = ['value'=>$payAmount];
         !empty($click->link) && $action['link'] = urlencode($click->link);
         !empty($click->callback) && $url = $click->callback;
 
@@ -102,12 +121,45 @@ class AdvConvertCallbackService extends ConvertCallbackService
      */
     public function getEventTypeMap(){
         return [
-            ConvertTypeEnum::ACTIVATION => 'ACTIVATE_APP',
+            ConvertTypeEnum::ACTIVATION => 'VIEW_CONTENT',
             ConvertTypeEnum::REGISTER => 'ACTIVATE_APP',
             ConvertTypeEnum::FOLLOW => 'REGISTER',
-            ConvertTypeEnum::ADD_DESKTOP => 'REGISTER',
+            ConvertTypeEnum::ADD_DESKTOP => 'ADD_DESKTOP',
             ConvertTypeEnum::PAY => 'PURCHASE',
         ];
+    }
+
+
+    /**
+     * @param $timeRangeEnum
+     * @return mixed|string
+     * 获取上报方式
+     */
+    public function getCallbackObjectParam($timeRangeEnum){
+        $res = 'read_0';
+        $map = [
+            ConvertCallbackTimeEnum::TODAY => GdtCallbackObjectEnum::FIRST_PAY_TODAY,
+            ConvertCallbackTimeEnum::HOUR_24 => GdtCallbackObjectEnum::FIRST_PAY_24,
+            ConvertCallbackTimeEnum::HOUR_72 => GdtCallbackObjectEnum::FIRST_PAY_72,
+        ];
+        if(isset($map[$timeRangeEnum])){
+            $res = $map[$timeRangeEnum];
+        }
+
+        return $res;
+    }
+
+
+    /**
+     * @param $cpType
+     * @return mixed
+     * @throws CustomException
+     * 获取产品平台名称
+     */
+    public function readCpTypeName($cpType){
+        Functions::hasEnum(CpTypeEnums::class,$cpType);
+        $map = array_column(CpTypeEnums::$list, null, 'id');
+        return $map[$cpType]['name'];
     }
 
 
