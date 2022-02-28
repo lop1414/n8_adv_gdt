@@ -72,11 +72,12 @@ class AdgroupController extends GdtController
 
                 // 广告组扩展
                 $v->gdt_adgroup_extends;
-                // 策略
-                $v->gdt_adgroup_extends->convert_callback_strategy;
-                // 策略组
-                $v->gdt_adgroup_extends->convert_callback_strategy_group;
-
+                if(!empty($v->gdt_adgroup_extends)){
+                    // 策略
+                    $v->gdt_adgroup_extends->convert_callback_strategy;
+                    // 策略组
+                    $v->gdt_adgroup_extends->convert_callback_strategy_group;
+                }
                 // 关联报表
                 //$v->report = $v->ocean_creative_reports()->compute()->first();
 
