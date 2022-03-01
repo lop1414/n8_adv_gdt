@@ -60,6 +60,7 @@ class GdtAdCreativeService extends GdtService
                 $creative['id'] = $creative['adcreative_id'];
                 $creative['name'] = $creative['adcreative_name'];
                 $creative['link_name_type'] = $creative['link_name_type'] ?? '';
+                $creative['link_page_type'] = $creative['link_page_type'] ?? '';
                 $creative['created_time'] = date('Y-m-d H:i:s',$creative['created_time']);
                 $creative['last_modified_time'] = date('Y-m-d H:i:s',$creative['last_modified_time']);
 
