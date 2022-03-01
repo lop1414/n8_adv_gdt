@@ -14,7 +14,7 @@ class GdtSyncReportCommand extends BaseCommand
      * 命令行执行命令
      * @var string
      */
-    protected $signature = 'gdt:sync_report {--type=}  {--date=}  {--account_ids=} {--multi_chunk_size=} {--key_suffix=} {--has_history_cost=}';
+    protected $signature = 'gdt:sync_report {--type=}  {--date=}  {--account_ids=} {--multi_chunk_size=} {--key_suffix=} {--has_history_cost=} {--run_by_account_cost=}';
 
     /**
      * 命令描述
