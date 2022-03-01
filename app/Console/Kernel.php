@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Common\Console\ConvertCallbackCommand;
 use App\Common\Console\Queue\QueueClickCommand;
 use App\Common\Helpers\Functions;
 use App\Console\Commands\Gdt\GdtSyncInfoCommand;
@@ -31,6 +32,10 @@ class Kernel extends ConsoleKernel
 
         // 同步渠道-广告组
         SyncChannelAdgroupCommand::class,
+
+
+        // 转化回传
+        ConvertCallbackCommand::class,
     ];
 
     /**
@@ -47,6 +52,10 @@ class Kernel extends ConsoleKernel
 
         // 同步渠道-广告组
         $schedule->command('sync_channel_adgroup --date=today')->cron('*/2 * * * *');
+
+
+        // 转化上报
+        $schedule->command('convert_callback')->cron('* * * * *');
 
         // 正式
         if(Functions::isProduction()){
