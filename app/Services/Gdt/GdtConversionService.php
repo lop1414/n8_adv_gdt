@@ -58,7 +58,7 @@ class GdtConversionService extends GdtService
                 $conversion['id'] = $conversion['conversion_id'];
                 $conversion['name'] = $conversion['conversion_name'];
                 $conversion['conversion_scene'] = $conversion['conversion_scene'] ?? '';
-                $conversion['user_action_set_id'] = $conversion['user_action_set_id'] ?? '';
+                $conversion['user_action_set_id'] = $conversion['user_action_set_id'] ?? 0;
                 $conversion['user_action_set_key'] = $conversion['user_action_set_key'] ?? '';
                 $conversion['created_at'] = $conversion['updated_at'] =  date('Y-m-d H:i:s');
                 $data[] = $conversion;
