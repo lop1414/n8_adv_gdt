@@ -117,7 +117,7 @@ class Gdt
 
         //是否已删除
         if(!empty($param['is_deleted'])){
-            $param['is_deleted'] = true;
+            $param['is_deleted'] = 'true';
         }
 
         return $param;
