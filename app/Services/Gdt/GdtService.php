@@ -110,7 +110,8 @@ class GdtService extends BaseService
      */
     public function getAccountGroup(array $accountIds = []){
         $gdtAccountModel = new GdtAccountModel();
-        $builder = $gdtAccountModel->where('status', StatusEnum::ENABLE);
+        $builder = $gdtAccountModel->where('status', StatusEnum::ENABLE)
+                    ->where('parent_id','>',0);
 
         if(!empty($accountIds)){
             $accountIdsStr = implode("','", $accountIds);

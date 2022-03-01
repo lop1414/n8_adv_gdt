@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Common\Controllers\Front\FrontController;
 
 
+use App\Common\Helpers\Advs;
+use App\Common\Models\ClickModel;
+use App\Services\AdvConvertCallbackService;
 use App\Services\Gdt\GdtAccountService;
 use App\Services\Gdt\GdtAdCreativeService;
 use App\Services\Gdt\GdtAdService;
@@ -29,8 +32,12 @@ class TestController extends FrontController
             return $this->forbidden();
         }
 
-        $ret = (new GdtConversionService('1110428552'))->sync(['account_ids' => [17814411]]);
-        dd($ret);
+        $click = (new ClickModel())->first();
+        $click->callback = 'http://tracking.e.qq.com/conv?cb=cYfkL18KKPrRqXdqSsh6TbBCY2dU57p5KbvN-3R0mps%3D&conv_id=3199063';
+        $click->android_id = '';
+        $click->oaid_md5 = '';
+        $click->adv_click_id = 'd37bkyqbaaal7ovuj2hq';
+        (new AdvConvertCallbackService())->runCallback($click,'PURCHASE','2022-02-23 17:30:02',0.8);
     }
 
 
