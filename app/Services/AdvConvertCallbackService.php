@@ -81,8 +81,7 @@ class AdvConvertCallbackService extends ConvertCallbackService
             $actionParam['object'] = $this->getCallbackObjectParam($timeRange);
         }
 
-        $eventTime = strtotime($item->convert_at);
-        $this->runCallback($item->click,$eventType,$eventTime,$actionParam);
+        $this->runCallback($item->click,$eventType,$item->convert_at,$actionParam);
 
         return true;
     }
