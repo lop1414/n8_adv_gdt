@@ -47,6 +47,9 @@ class GdtSyncReportCommand extends BaseCommand
         // 历史消耗
         !empty($option['has_history_cost']) && $param['has_history_cost'] = $option['has_history_cost'];
 
+        // 账户消耗
+        !empty($option['run_by_account_cost']) && $param['run_by_account_cost'] = $option['run_by_account_cost'];
+
         // 账户id
         if(!empty($option['account_ids'])){
             $param['account_ids'] = explode(",", $option['account_ids']);
