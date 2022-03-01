@@ -56,6 +56,7 @@ class GdtAdService extends GdtService
                 $ad['audit_spec'] = json_encode($ad['audit_spec']);
                 $ad['id'] = $ad['ad_id'];
                 $ad['name'] = $ad['ad_name'];
+                $ad['audit_spec'] = $ad['audit_spec'] ?? [];
                 $ad['created_time'] = date('Y-m-d H:i:s',$ad['created_time']);
                 $ad['last_modified_time'] = date('Y-m-d H:i:s',$ad['last_modified_time']);
                 $ad['created_at'] = $ad['updated_at'] =  date('Y-m-d H:i:s');
