@@ -60,7 +60,7 @@ class Kernel extends ConsoleKernel
         // 正式
         if(Functions::isProduction()){
             // 广点通转化归因同步
-            $schedule->command('gdt:sync_info --type=conversion --update_date=today')->cron('*/5 * * * *');
+            $schedule->command('gdt:sync_info --type=conversion')->cron('*/5 * * * *');
 
 
             // 广点通推广计划同步
