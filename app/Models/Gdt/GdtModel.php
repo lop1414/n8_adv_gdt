@@ -25,7 +25,7 @@ class GdtModel extends BaseModel
         if(!$adminUserInfo['is_admin']){
             $query->whereRaw("
                 {$table}.account_id IN (
-                    SELECT account_id FROM ocean_accounts
+                    SELECT account_id FROM gdt_accounts
                         WHERE admin_id = {$adminUserInfo['admin_user']['id']}
                 )
             ");
@@ -43,7 +43,7 @@ class GdtModel extends BaseModel
         $table = $this->getTable();
         $query->whereRaw("
             {$table}.account_id IN (
-                SELECT account_id FROM ocean_accounts
+                SELECT account_id FROM gdt_accounts
                     WHERE admin_id = {$adminUserInfo['admin_user']['id']}
             )
         ");
