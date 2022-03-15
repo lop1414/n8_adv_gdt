@@ -53,7 +53,7 @@ class GdtAdService extends GdtService
             $data = [];
             foreach($ads as $ad) {
                 $ad['extends'] = json_encode($ad);
-                $ad['audit_spec'] = !empty($ad['audit_spec']) ? json_encode($ad['audit_spec']) : [];
+                $ad['audit_spec'] = !empty($ad['audit_spec']) ? json_encode($ad['audit_spec']) : '';
                 $ad['id'] = $ad['ad_id'];
                 $ad['name'] = $ad['ad_name'];
                 $ad['audit_spec'] = $ad['audit_spec'] ?? [];
