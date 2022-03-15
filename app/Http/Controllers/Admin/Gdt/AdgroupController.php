@@ -46,7 +46,7 @@ class AdgroupController extends GdtController
                 $report = DB::table('gdt_ad_reports')
                     ->whereBetween('stat_datetime', ["{$startDate} 00:00:00", "{$endDate} 23:59:59"])
                     ->select(DB::raw("
-                        adgroup_id,
+                        report.adgroup_id,
                         ROUND(SUM(`cost` / 100), 2) `cost`,
                         SUM(`valid_click_count`) `click`,
                         SUM(`view_count`) `show`,

@@ -64,8 +64,8 @@ class GdtAdgroupModel extends GdtModel
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      * 关联渠道模型 一对一
      */
-    public function channel_unit(){
-        return $this->hasOne('App\Models\ChannelUnitModel', 'adgroup_id', 'id');
+    public function channel_adgroup(){
+        return $this->hasOne('App\Models\ChannelAdGroupModel', 'adgroup_id', 'id');
     }
 
 

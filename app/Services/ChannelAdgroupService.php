@@ -285,7 +285,7 @@ class ChannelAdgroupService extends BaseService
                     'channel_id' => $param['ios_channel_id'],
                     'platform' => PlatformEnum::IOS,
                     'extends' => [
-                        'action_track_url' => $feedbackUrl,
+                        'feedback_url' => $feedbackUrl,
                         'channel' => $channel,
                     ],
                 ]);
