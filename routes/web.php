@@ -62,6 +62,11 @@ $router->group([
     });
 
 
+    // 渠道-计划
+    $router->group(['prefix' => 'channel_adgroup'], function () use ($router) {
+        $router->post('batch_update', 'Admin\ChannelAdgroupController@batchUpdate');
+    });
+
     // 回传策略
     $router->group(['prefix' => 'convert_callback_strategy'], function () use ($router) {
         $router->post('create', '\\App\Common\Controllers\Admin\ConvertCallbackStrategyController@create');
