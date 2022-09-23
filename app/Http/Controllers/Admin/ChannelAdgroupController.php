@@ -19,7 +19,11 @@ class ChannelAdgroupController extends FrontController
     public function batchUpdate(Request $request){
         $data = $request->post();
         if(isset($data['channel_id'])){
-            $data['channel'] = (new UnionApiService())->apiReadChannel(['id' => $data['channel_id']]);
+            $channel = (new UnionApiService())->apiReadChannel(['id' => $data['channel_id']]);
+            $channel['admin_id'] = $channelExtends['admin_id'] ?? 0;
+            unset($channel['extends']);
+            unset($channel['channel_extends']);
+            $data['channel'] = $channel;
         }
 
         $channelAdgroupService = new ChannelAdgroupService();
