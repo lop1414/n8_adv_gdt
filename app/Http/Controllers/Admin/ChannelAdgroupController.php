@@ -20,7 +20,7 @@ class ChannelAdgroupController extends FrontController
         $data = $request->post();
         if(isset($data['channel_id'])){
             $channel = (new UnionApiService())->apiReadChannel(['id' => $data['channel_id']]);
-            $channel['admin_id'] = $channelExtends['admin_id'] ?? 0;
+            $channel['admin_id'] = $channel['channel_extends']['admin_id'] ?? 0;
             unset($channel['extends']);
             unset($channel['channel_extends']);
             $data['channel'] = $channel;
