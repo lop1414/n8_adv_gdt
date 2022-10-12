@@ -37,32 +37,6 @@ class AccountController extends GdtController
         $this->curdService->selectQueryBefore(function(){
             $this->curdService->customBuilder(function($builder){
                 $this->filter();
-
-                // 时间范围
-                $startDate = $this->curdService->requestData['start_date'] ?? date('Y-m-d');
-                $endDate = $this->curdService->requestData['end_date'] ?? date('Y-m-d');
-                Functions::dateCheck($startDate);
-                Functions::dateCheck($endDate);
-
-                $report = DB::table('gdt_account_reports')
-                    ->whereBetween('stat_datetime', ["{$startDate} 00:00:00", "{$endDate} 23:59:59"])
-                    ->select(DB::raw("
-                        account_id report_account_id,
-                        ROUND(SUM(`cost` / 100), 2) `cost`,
-                        SUM(`valid_click_count`) `click`,
-                        SUM(`view_count`) `show`,
-                        SUM(`conversions_count`) `convert`,
-                        ROUND(SUM(`cost` / 100) / SUM(`view_count`) * 1000, 2) `show_cost`,
-                        ROUND(SUM(`cost` / 100) / SUM(`valid_click_count`), 2) `click_cost`,
-                        ROUND(SUM(`valid_click_count`) / SUM(`view_count`), 4) `click_rate`,
-                        ROUND(SUM(`cost` / 100) / SUM(`conversions_count`), 2) `convert_cost`,
-                        ROUND(SUM(`conversions_count`) / SUM(`valid_click_count`), 4) `convert_rate`
-                    "))
-                    ->groupBy('account_id');
-
-                $builder->LeftjoinSub($report, 'report', function($join){
-                    $join->on('gdt_accounts.account_id', '=', 'report.report_account_id');
-                });
             });
         });
 
