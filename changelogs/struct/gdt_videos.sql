@@ -26,6 +26,7 @@ CREATE TABLE `gdt_videos` (
   `file_size` varchar(100) NOT NULL DEFAULT '' COMMENT '视频大小',
   `width` int(11) NOT NULL DEFAULT '0' COMMENT '视频宽度',
   `height` int(11) NOT NULL DEFAULT '0' COMMENT '视频高度',
+  `type` varchar(255) NOT NULL DEFAULT '' COMMENT '视频类型',
   `video_codec` varchar(255) NOT NULL DEFAULT '' COMMENT '视频格式',
   `signature` varchar(64) NOT NULL DEFAULT '' COMMENT '视频签名',
   `key_frame_image_url` varchar(512) NOT NULL DEFAULT '' COMMENT '视频首帧截图',
