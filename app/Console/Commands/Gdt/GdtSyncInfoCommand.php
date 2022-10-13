@@ -10,6 +10,8 @@ use App\Services\Gdt\GdtAdgroupService;
 use App\Services\Gdt\GdtAdService;
 use App\Services\Gdt\GdtCampaignService;
 use App\Services\Gdt\GdtConversionService;
+use App\Services\Gdt\GdtImageService;
+use App\Services\Gdt\GdtVideoService;
 
 class GdtSyncInfoCommand extends BaseCommand
 {
@@ -91,6 +93,14 @@ class GdtSyncInfoCommand extends BaseCommand
                 //已删除的无法获取
                 //无法根据时间过滤获取
                 $service = new GdtConversionService();
+                break;
+            case 'image':
+                echo "同步广点通图片\n";
+                $service = new GdtImageService();
+                break;
+            case 'video':
+                echo "同步广点通视频\n";
+                $service = new GdtVideoService();
                 break;
             default:
                 throw new CustomException([

@@ -85,27 +85,27 @@ class GdtImageService extends GdtService
         $gdtImg->source_type = $img['source_type'];
         $gdtImg->image_usage = $img['image_usage'];
         $gdtImg->owner_account_id = $img['owner_account_id'];
-        $gdtImg->status = $img['status'];
         $gdtImg->created_time = date('Y-m-d H:i:s',$img['created_time']);
-        $gdtImg->last_modified_time = date('Y-m-d H:i:s',$img['last_modified_time']);
         $ret = $gdtImg->save();
 
         if($ret){
             // 添加关联关系
-            $this->relationAccount($img['account_id'],$img['image_id']);
+            $this->relationAccount($img['account_id'],$img['image_id'],$img['status']);
         }
 
         return $ret;
     }
 
 
+
     /**
+     * 关联账户
      * @param $accountId
      * @param $imageId
+     * @param $status
      * @return GdtAccountImageModel
-     * 关联账户
      */
-    public function relationAccount($accountId,$imageId){
+    public function relationAccount($accountId,$imageId,$status){
         $gdtAccountImageModel = new GdtAccountImageModel();
         $gdtAccountImage = $gdtAccountImageModel->where('account_id', $accountId)
             ->where('image_id', $imageId)
@@ -115,6 +115,11 @@ class GdtImageService extends GdtService
             $gdtAccountImage = new GdtAccountImageModel();
             $gdtAccountImage->account_id = $accountId;
             $gdtAccountImage->image_id = $imageId;
+            $gdtAccountImage->status = $status;
+            $gdtAccountImage->save();
+        }elseif($gdtAccountImage->status != $status){
+
+            $gdtAccountImage->status = $status;
             $gdtAccountImage->save();
         }
         return $gdtAccountImage;

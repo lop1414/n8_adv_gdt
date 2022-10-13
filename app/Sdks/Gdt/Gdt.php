@@ -15,6 +15,7 @@ use App\Sdks\Gdt\Traits\Image;
 use App\Sdks\Gdt\Traits\Multi;
 use App\Sdks\Gdt\Traits\Report;
 use App\Sdks\Gdt\Traits\Request;
+use App\Sdks\Gdt\Traits\Video;
 
 class Gdt
 {
@@ -28,6 +29,7 @@ class Gdt
     use Adgroup;
     use Creative;
     use Image;
+    use Video;
     use Ad;
     use Conversion;
     use Report;

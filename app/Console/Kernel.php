@@ -62,6 +62,11 @@ class Kernel extends ConsoleKernel
             // 广点通转化归因同步
             $schedule->command('gdt:sync_info --type=conversion')->cron('*/5 * * * *');
 
+            // 广点通图片
+            $schedule->command('gdt:sync_info --type=image --update_date=today')->cron('*/15 * * * *');
+            // 广点通视频
+            $schedule->command('gdt:sync_info --type=video --update_date=today')->cron('*/15 * * * *');
+
 
             // 广点通推广计划同步
             $schedule->command('gdt:sync_info --type=campaign --update_date=today --multi_chunk_size=1')->cron('*/30 * * * *');
