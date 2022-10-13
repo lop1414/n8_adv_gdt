@@ -109,20 +109,20 @@ class GdtMaterialAdcreativeService extends GdtService
             }
 
             $material = [
-                'material_id' => $gdtImage->material_id,
+                'material_id' => $gdtImage->id,
                 'n8_material_id' => $n8MaterialId,
                 'signature' => $gdtImage->signature,
             ];
         }elseif($materialType == MaterialTypeEnums::VIDEO){
-            $oceanVideo = GdtVideoModel::find($fileId);
-            if(empty($oceanVideo)){
+            $gdtVideo = GdtVideoModel::find($fileId);
+            if(empty($gdtVideo)){
                 echo "找不到视频：{$fileId}\n";
                 return null;
             }
 
             $videoModel = new \App\Models\Material\VideoModel();
             $video = $videoModel->whereRaw("
-                (signature = '{$oceanVideo->signature}' OR source_signature = '{$oceanVideo->signature}')
+                (signature = '{$gdtVideo->signature}' OR source_signature = '{$gdtVideo->signature}')
             ")->first();
 
             $n8MaterialId = 0;
@@ -131,9 +131,9 @@ class GdtMaterialAdcreativeService extends GdtService
             }
 
             $material = [
-                'material_id' => $oceanVideo->material_id,
+                'material_id' => $gdtVideo->id,
                 'n8_material_id' => $n8MaterialId,
-                'signature' => $oceanVideo->signature,
+                'signature' => $gdtVideo->signature,
             ];
 
         }else{
