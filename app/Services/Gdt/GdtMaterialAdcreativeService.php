@@ -163,7 +163,7 @@ class GdtMaterialAdcreativeService extends GdtService
         }
 
         $gdtMaterialAdcreative->material_id = $item['material_id'];
-        $gdtMaterialAdcreative->creative_id = $item['creative_id'];
+        $gdtMaterialAdcreative->adcreative_id = $item['adcreative_id'];
         $gdtMaterialAdcreative->material_type = $item['material_type'];
         $gdtMaterialAdcreative->n8_material_id = $item['n8_material_id'] ?? 0;
         $gdtMaterialAdcreative->signature = $item['signature'] ?? '';
