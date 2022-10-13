@@ -94,6 +94,7 @@ class GdtMaterialAdcreativeService extends GdtService
         if($materialType == MaterialTypeEnums::IMAGE){
             $gdtImage = GdtImageModel::find($fileId);
             if(empty($gdtImage)){
+                echo "找不到图片：{$fileId}\n";
                 return null;
             }
 
@@ -115,6 +116,7 @@ class GdtMaterialAdcreativeService extends GdtService
         }elseif($materialType == MaterialTypeEnums::VIDEO){
             $oceanVideo = GdtVideoModel::find($fileId);
             if(empty($oceanVideo)){
+                echo "找不到视频：{$fileId}\n";
                 return null;
             }
 
