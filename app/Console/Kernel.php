@@ -5,6 +5,7 @@ namespace App\Console;
 use App\Common\Console\ConvertCallbackCommand;
 use App\Common\Console\Queue\QueueClickCommand;
 use App\Common\Helpers\Functions;
+use App\Console\Commands\Gdt\GdtMaterialAdcreativeSyncCommand;
 use App\Console\Commands\Gdt\GdtSyncInfoCommand;
 use App\Console\Commands\Gdt\GdtSyncReportCommand;
 use App\Console\Commands\SyncChannelAdgroupCommand;
@@ -29,6 +30,8 @@ class Kernel extends ConsoleKernel
         // 广点通
         GdtSyncInfoCommand::class,
         GdtSyncReportCommand::class,
+        GdtMaterialAdcreativeSyncCommand::class,
+
 
         // 同步渠道-广告组
         SyncChannelAdgroupCommand::class,
@@ -36,6 +39,7 @@ class Kernel extends ConsoleKernel
 
         // 转化回传
         ConvertCallbackCommand::class,
+
     ];
 
     /**
@@ -66,6 +70,9 @@ class Kernel extends ConsoleKernel
             $schedule->command('gdt:sync_info --type=image --update_date=today')->cron('*/15 * * * *');
             // 广点通视频
             $schedule->command('gdt:sync_info --type=video --update_date=today')->cron('*/15 * * * *');
+
+            // 同步素材-创意关联
+            $schedule->command('gdt:material_adcreative_sync --date=today')->cron('*/20 * * * *');
 
 
             // 广点通推广计划同步

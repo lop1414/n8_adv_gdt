@@ -2,6 +2,8 @@
 
 namespace App\Sdks\Gdt\Traits;
 
+use App\Enums\Gdt\GdtMaterialTypeEnum;
+
 trait Creative
 {
 
@@ -35,6 +37,25 @@ trait Creative
         $param = $this->filterParam($param);
 
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
+    }
+
+
+    /**
+     * 获取素材类型
+     * @param $adcreativeTemplateId
+     * @return string|void
+     */
+    public function getMaterialType($adcreativeTemplateId){
+        $img = [711,712,925,910,311,641,642,643,713,714,718,727,951,964,965,972,1707,1766,1846];
+        if(in_array($adcreativeTemplateId,$img)){
+            return GdtMaterialTypeEnum::IMAGE;
+        }
+
+        $video = [721,720,599,618,722,15299,1708,1765,1885,1945];
+        if(in_array($adcreativeTemplateId,$video)){
+            return GdtMaterialTypeEnum::VIDEO;
+        }
+        return;
     }
 
 }

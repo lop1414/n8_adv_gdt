@@ -6,7 +6,7 @@ use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
 use App\Models\Gdt\GdtAdcreativeModel;
 
-class GdtAdCreativeService extends GdtService
+class GdtAdcreativeService extends GdtService
 {
     /**
      * constructor.

@@ -5,7 +5,7 @@ namespace App\Console\Commands\Gdt;
 use App\Common\Console\BaseCommand;
 use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
-use App\Services\Gdt\GdtAdCreativeService;
+use App\Services\Gdt\GdtAdcreativeService;
 use App\Services\Gdt\GdtAdgroupService;
 use App\Services\Gdt\GdtAdService;
 use App\Services\Gdt\GdtCampaignService;
@@ -82,7 +82,7 @@ class GdtSyncInfoCommand extends BaseCommand
                 break;
             case 'ad_creative':
                 echo "同步广点通广告创意\n";
-                $service = new GdtAdCreativeService();
+                $service = new GdtAdcreativeService();
                 break;
             case 'ad':
                 echo "同步广点通广告\n";
