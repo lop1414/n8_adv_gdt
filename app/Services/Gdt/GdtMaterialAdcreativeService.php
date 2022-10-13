@@ -43,14 +43,15 @@ class GdtMaterialAdcreativeService extends GdtService
 
         foreach($gdtAdcreatives as $gdtAdcreative){
 
-            $materialType = $this->sdk->getMaterialType($gdtAdcreative->adcreative_template_id);
+            $adCreativeMaterialType = $this->sdk->getMaterialType($gdtAdcreative->adcreative_template_id);
             $fileId = 0;
-            if($materialType == GdtMaterialTypeEnum::VIDEO){
+            $materialType = '';
+            if($adCreativeMaterialType == GdtMaterialTypeEnum::VIDEO){
                 $materialType = MaterialTypeEnums::VIDEO;
                 $fileId = $gdtAdcreative->extends->adcreative_elements->video;
             }
 
-            if($materialType == GdtMaterialTypeEnum::IMAGE){
+            if($adCreativeMaterialType == GdtMaterialTypeEnum::IMAGE){
                 $materialType = MaterialTypeEnums::IMAGE;
                 if(isset($gdtAdcreative->extends->adcreative_elements->image)){
                     $fileId =  $gdtAdcreative->extends->adcreative_elements->image;
