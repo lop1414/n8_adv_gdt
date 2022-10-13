@@ -52,7 +52,17 @@ class GdtMaterialAdcreativeService extends GdtService
 
             if($materialType == GdtMaterialTypeEnum::IMAGE){
                 $materialType = MaterialTypeEnums::IMAGE;
-                $fileId =  $gdtAdcreative->extends->adcreative_elements->image;
+                if(isset($gdtAdcreative->extends->adcreative_elements->image)){
+                    $fileId =  $gdtAdcreative->extends->adcreative_elements->image;
+                }elseif (isset($gdtAdcreative->extends->adcreative_elements->image_list) && !empty($gdtAdcreative->extends->adcreative_elements->image_list)){
+                    if(count($gdtAdcreative->extends->adcreative_elements->image_list) > 1){
+                        throw new CustomException([
+                            'code' => 'ADCREATIVE_COUNT_MAX',
+                            'message' => '广告创意图片数量大于1',
+                        ]);
+                    }
+                    $fileId =  $gdtAdcreative->extends->adcreative_elements->image_list[0];
+                }
             }
 
             if($fileId == 0) continue;
