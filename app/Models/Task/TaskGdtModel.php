@@ -10,7 +10,7 @@ class TaskGdtModel extends SubTaskModel
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      * 关联巨量账户模型 一对一
      */
-    public function ocean_account(){
+    public function gdt_account(){
         return $this->belongsTo('App\Models\Gdt\GdtAccountModel', 'account_id', 'account_id');
     }
 }

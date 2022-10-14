@@ -29,6 +29,22 @@ $router->group([
         $router->post('disable', 'Admin\AppController@disable');
     });
 
+    // 任务
+    $router->group(['prefix' => 'task'], function () use ($router) {
+        $router->post('select', '\\App\Common\Controllers\Admin\TaskController@select');
+        $router->post('open', '\\App\Common\Controllers\Admin\TaskController@open');
+        $router->post('close', '\\App\Common\Controllers\Admin\TaskController@close');
+    });
+
+    // 子任务
+    $router->group(['prefix' => 'sub_task'], function () use ($router) {
+        // 广点通视频上传
+        $router->group(['prefix' => 'gdt_video_upload'], function () use ($router) {
+            $router->post('select', 'Admin\SubTask\TaskGdtVideoUploadController@select');
+            $router->post('read', 'Admin\SubTask\TaskGdtVideoUploadController@read');
+        });
+    });
+
     // 广点通
     $router->group(['prefix' => 'gdt'], function () use ($router) {
         // 账户
