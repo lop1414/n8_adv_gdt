@@ -4,8 +4,10 @@ namespace App\Services\Gdt;
 
 use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
+use App\Enums\Gdt\GdtSyncTypeEnum;
 use App\Models\Gdt\GdtAccountVideoModel;
 use App\Models\Gdt\GdtVideoModel;
+use App\Services\Task\TaskGdtSyncService;
 
 class GdtVideoService extends GdtService
 {
@@ -15,6 +17,44 @@ class GdtVideoService extends GdtService
      */
     public function __construct($appId = ''){
         parent::__construct($appId);
+    }
+
+
+    /**
+     * @param $accountId
+     * @param $signature
+     * @param $file
+     * @param string $filename
+     * @return mixed
+     * @throws CustomException
+     * 上传
+     */
+    public function uploadVideo($accountId, $signature, $file, $filename = ''){
+        $this->setAccessToken();
+
+        $ret = $this->sdk->addVideo($accountId, $signature, $file, $filename);
+        Functions::consoleDump($ret);
+
+        // 同步
+        if(!empty($ret['video_id'])){
+            $taskOceanSyncService = new TaskGdtSyncService(GdtSyncTypeEnum::VIDEO);
+            $task = [
+                'name' => '同步广点通视频',
+                'admin_id' => 0,
+            ];
+            $subs = [];
+            $subs[] = [
+                'app_id' => $this->sdk->getAppId(),
+                'account_id' => $accountId,
+                'admin_id' => 0,
+                'extends' => [
+                    'video_id' => $ret['video_id']
+                ],
+            ];
+            $taskOceanSyncService->create($task, $subs);
+        }
+
+        return $ret;
     }
 
 

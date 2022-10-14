@@ -59,6 +59,13 @@ $router->group([
             $router->post('read', 'Admin\Gdt\AdgroupExtendController@read');
             $router->post('batch_update', 'Admin\Gdt\AdgroupExtendController@batchUpdate');
         });
+
+
+        // 视频
+        $router->group(['prefix' => 'video'], function () use ($router) {
+            $router->post('upload', 'Admin\Gdt\VideoController@upload');
+            $router->post('batch_upload', 'Admin\Gdt\VideoController@batchUpload');
+        });
     });
 
 

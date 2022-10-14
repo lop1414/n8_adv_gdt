@@ -4,6 +4,7 @@ namespace App\Enums;
 
 use App\Common\Enums\SystemAliasEnum;
 use App\Models\Task\TaskGdtSyncModel;
+use App\Models\Task\TaskGdtVideoUploadModel;
 
 class TaskTypeEnum
 {

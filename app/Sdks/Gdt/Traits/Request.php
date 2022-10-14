@@ -34,6 +34,9 @@ trait Request
             'Content-Type: application/json; charset=utf-8',
         ], $header);
 
+        if($method == 'POST'){
+            $param = json_encode($param);
+        }
         $ret = $this->publicRequest($url, $param, $method, $header, $option);
 
         return $ret;
@@ -51,11 +54,17 @@ trait Request
      */
     public function fileRequest($url, $param = [], $method = 'POST', $header = [], $option = []){
         // header 添加 Access-Token
-        $header = array_merge([
-            'Access-Token:'. $this->getAccessToken()
-        ], $header);
+//        $header = array_merge([
+//            'Content-Type: application/json;'
+//        ], $header);
 
         $option['timeout'] = $option['timeout'] ?? 60;
+
+        $url .= '?'.http_build_query([
+                'access_token' => $this->getAccessToken(),
+                'timestamp' => time(),
+                'nonce' => md5(uniqid())
+            ]);
 
         $ret = $this->publicRequest($url, $param, $method, $header, $option);
 
@@ -166,7 +175,6 @@ trait Request
 
         if($method == 'POST'){
             curl_setopt($ch, CURLOPT_POST, true);
-            $param = json_encode($param);
         }
 
         $timeout = $option['timeout'] ?? 30;

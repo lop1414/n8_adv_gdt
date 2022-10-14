@@ -4,6 +4,26 @@ namespace App\Sdks\Gdt\Traits;
 
 trait Video
 {
+    /**
+     * @param $accountId
+     * @param $signature
+     * @param $file
+     * @param string $filename
+     * @return mixed
+     * 上传
+     */
+    public function addVideo($accountId, $signature, $file, $filename = ''){
+        $url = $this->getUrl('v1.3/videos/add');
+        $param = [
+            'account_id' => $accountId,
+            'signature'  => $signature,
+            'video_file' => $file,
+        ];
+
+        !empty($filename) && $param['description'] = $filename;
+
+        return $this->fileRequest($url, $param);
+    }
 
     /**
      * @param array $accounts
