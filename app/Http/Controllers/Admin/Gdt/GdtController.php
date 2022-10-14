@@ -141,9 +141,9 @@ class GdtController extends AdminController
      */
     public function getAdminUserAccount($adminUserInfo){
         $gdtAccountModel = new GdtAccountModel();
-        if(!$adminUserInfo['is_admin']){
+//        if(!$adminUserInfo['is_admin']){
             $gdtAccountModel = $gdtAccountModel->where('admin_id', $adminUserInfo['admin_user']['id']);
-        }
+//        }
         $gdtAccounts = $gdtAccountModel->get();
 
         return $gdtAccounts;

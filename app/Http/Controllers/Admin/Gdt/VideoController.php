@@ -55,7 +55,7 @@ class VideoController extends GdtController
         $gdtAccount = $this->getAccessAccount($accountId);
         $gdtVideoService = new GdtVideoService($gdtAccount->app_id);
         $gdtVideoService->setAccountId($gdtAccount->account_id);
-        $data = $gdtVideoService->uploadVideo($gdtAccount->account_id, $signature, $curlFile);
+        $data = $gdtVideoService->uploadVideo($gdtAccount->account_id, $signature, $curlFile,$file->getClientOriginalName());
 
         return $this->success($data);
     }
