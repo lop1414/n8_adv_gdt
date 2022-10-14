@@ -66,7 +66,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('convert_callback')->cron('* * * * *');
 
         // 广点通上传任务
-        $schedule->command('task:ocean_video_upload')->cron('* * * * *');
+        $schedule->command('task:gdt_video_upload')->cron('* * * * *');
 
         // 广点通同步任务
         $schedule->command('task:ocean_sync --type=video')->cron('* * * * *');
