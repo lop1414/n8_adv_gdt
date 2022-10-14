@@ -69,7 +69,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('task:gdt_video_upload')->cron('* * * * *');
 
         // 广点通同步任务
-        $schedule->command('task:ocean_sync --type=video')->cron('* * * * *');
+        $schedule->command('task:gdt_sync --type=video')->cron('* * * * *');
 
         // 正式
         if(Functions::isProduction()){
