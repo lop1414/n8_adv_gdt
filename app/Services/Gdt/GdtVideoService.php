@@ -83,6 +83,15 @@ class GdtVideoService extends GdtService
 
         $accountGroup = $this->getAccountGroup($param['account_ids']);
 
+        if(!empty($param['ids'])){
+            $param['filtering'][] = [
+                'field' => 'media_id',
+                'operator' => 'IN',
+                'values'   => $param['ids']
+            ];
+            unset($param['ids']);
+        }
+
         $t = microtime(1);
 
         foreach($accountGroup as $g){

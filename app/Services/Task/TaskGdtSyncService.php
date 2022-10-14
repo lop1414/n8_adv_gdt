@@ -7,6 +7,8 @@ use App\Enums\Gdt\GdtSyncTypeEnum;
 use App\Enums\TaskTypeEnum;
 use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
+use App\Services\Gdt\GdtAccountService;
+use App\Services\Gdt\GdtVideoService;
 
 class TaskGdtSyncService extends TaskGdtService
 {
@@ -68,8 +70,8 @@ class TaskGdtSyncService extends TaskGdtService
         $subModel = new $this->subModelClass();
 
         $builder = $subModel->where('task_id', $taskId)
-            ->where('sync_type', $this->syncType)
-            ->where('exec_status', ExecStatusEnum::WAITING);
+            ->where('sync_type', $this->syncType);
+//            ->where('exec_status', ExecStatusEnum::WAITING);
 
         if($this->syncType == GdtSyncTypeEnum::VIDEO){
             // 获取3分钟前创建的任务
@@ -90,10 +92,58 @@ class TaskGdtSyncService extends TaskGdtService
      * 执行单个子任务
      */
     public function runSub($subTask){
-        throw new CustomException([
-            'code' => 'NOT_HANDLE_FOR_SYNC_TYPE',
-            'message' => '该同步类型无对应处理',
-        ]);
+        if($this->syncType == GdtSyncTypeEnum::ACCOUNT){
+            $this->syncAccount($subTask);
+        }elseif($this->syncType == GdtSyncTypeEnum::VIDEO){
+            $this->syncVideo($subTask);
+        }else{
+            throw new CustomException([
+                'code' => 'NOT_HANDLE_FOR_SYNC_TYPE',
+                'message' => '该同步类型无对应处理',
+            ]);
+        }
+
+        return true;
+    }
+
+
+    /**
+     * @param $subTask
+     * @return bool
+     * @throws CustomException
+     * 同步广告账户
+     */
+    private function syncAccount($subTask){
+        $gdtAccountService = new GdtAccountService($subTask->app_id);
+        $option = [
+            'app_id' => $subTask->app_id,
+            'account_id' => $subTask->account_id,
+        ];
+        $gdtAccountService->sync($option);
+        return true;
+    }
+
+
+    /**
+     * @param $subTask
+     * @return bool
+     * @throws CustomException
+     * 同步视频
+     */
+    private function syncVideo($subTask){
+        $gdtVideoService = new GdtVideoService($subTask->app_id);
+
+        $option = [
+            'account_ids' => [$subTask->account_id],
+        ];
+
+        // 筛选视频id
+        if(!empty($subTask->extends->video_id)){
+            $option['ids'] = [$subTask->extends->video_id];
+        }
+
+        $gdtVideoService->sync($option);
+        return true;
     }
 
 

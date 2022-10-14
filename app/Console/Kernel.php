@@ -61,6 +61,12 @@ class Kernel extends ConsoleKernel
         // 转化上报
         $schedule->command('convert_callback')->cron('* * * * *');
 
+        // 广点通上传任务
+        $schedule->command('task:ocean_video_upload')->cron('* * * * *');
+
+        // 广点通同步任务
+        $schedule->command('task:ocean_sync --type=video')->cron('* * * * *');
+
         // 正式
         if(Functions::isProduction()){
             // 广点通转化归因同步
