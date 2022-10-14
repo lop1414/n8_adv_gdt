@@ -10,6 +10,7 @@ use App\Console\Commands\Gdt\GdtSyncInfoCommand;
 use App\Console\Commands\Gdt\GdtSyncReportCommand;
 use App\Console\Commands\SyncChannelAdgroupCommand;
 use App\Console\Commands\Task\TaskGdtSyncCommand;
+use App\Console\Commands\Task\TaskGdtVideoUploadCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
 
@@ -24,6 +25,9 @@ class Kernel extends ConsoleKernel
 
         // 队列
         QueueClickCommand::class,
+
+        // 广点通上传任务
+        TaskGdtVideoUploadCommand::class,
 
         TaskGdtSyncCommand::class,
 
