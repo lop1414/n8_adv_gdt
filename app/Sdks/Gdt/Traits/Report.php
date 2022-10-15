@@ -20,7 +20,7 @@ trait Report
         if(!isset($param['fields'])){
             $param['fields'] =  [
                 'account_id','date','view_count', 'valid_click_count','cost',
-                'conversions_count','conversions_by_display_count'
+                'conversions_count','conversions_by_display_count','from_follow_uv'
             ];
         }
 
