@@ -44,7 +44,8 @@ trait Report
             $param['fields'] =  [
                 'account_id','hour','campaign_id','adgroup_id','ad_id',
                 'view_count', 'valid_click_count','cost',
-                'conversions_count','conversions_by_display_count'
+                'conversions_count','conversions_by_display_count',
+                'from_follow_uv',
             ];
         }
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
