@@ -20,7 +20,8 @@ trait Report
         if(!isset($param['fields'])){
             $param['fields'] =  [
                 'account_id','date','view_count', 'valid_click_count','cost',
-                'conversions_count','conversions_by_display_count','from_follow_uv'
+                'conversions_count','conversions_by_display_count',
+                'from_follow_uv','biz_follow_uv','biz_consult_count'
             ];
         }
 
@@ -45,7 +46,7 @@ trait Report
                 'account_id','hour','campaign_id','adgroup_id','ad_id',
                 'view_count', 'valid_click_count','cost',
                 'conversions_count','conversions_by_display_count',
-                'from_follow_uv',
+                'from_follow_uv','biz_follow_uv','biz_consult_count'
             ];
         }
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
