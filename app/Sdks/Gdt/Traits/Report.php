@@ -17,6 +17,7 @@ trait Report
 
         $param['level'] = 'REPORT_LEVEL_ADVERTISER';
         $param['group_by'] = ['date'];
+        $param['time_line'] = 'REPORTING_TIME';
         if(!isset($param['fields'])){
             $param['fields'] =  [
                 'account_id','date','view_count', 'valid_click_count','cost',
@@ -40,6 +41,7 @@ trait Report
         $url = $this->getUrl('v1.3/hourly_reports/get');
         $param['level'] = 'REPORT_LEVEL_AD';
         $param['group_by'] = ['hour','ad_id'];
+        $param['time_line'] = 'REPORTING_TIME';
 
         if(!isset($param['fields'])){
             $param['fields'] =  [
