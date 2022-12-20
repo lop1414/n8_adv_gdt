@@ -43,7 +43,7 @@ class GdtSyncReportCommand extends BaseCommand
         $param = ['account_ids' => []];
 
         // 日期
-        !empty($option['date']) && $param['date'] = Functions::getDate($option['date']);
+        !empty($option['date']) && $param['date'] = $option['date'];
 
         // 历史消耗
         !empty($option['has_history_cost']) && $param['has_history_cost'] = $option['has_history_cost'];
