@@ -16,6 +16,9 @@ class GdtReportService extends GdtService
     public $modelClass;
 
 
+    public $pageSize = 200;
+
+
 
     /**
      * OceanAccountReportService constructor.
@@ -90,7 +93,7 @@ class GdtReportService extends GdtService
                 ],
             ];
 
-            $pageSize = 200;
+            $pageSize = $this->pageSize;
             foreach($accountGroup as $g){
                 $items = $this->multiGetPageList($g, $pageSize, $param);
 
@@ -101,14 +104,12 @@ class GdtReportService extends GdtService
                 // 保存
                 $data = [];
                 foreach($items as $item) {
-                    $cost += $item['cost'];
+                    $cost += $item['cost'] ?? 0;
                     $item['date'] = $item['date'] ?? $date;
                     if(!$this->itemValid($item)){
                         continue;
                     }
-                    $item['extends'] = json_encode($item);
-                    $item['hour'] = $item['hour'] ?? 0;
-                    $item['stat_datetime'] = date('Y-m-d H:i:s',strtotime(" +{$item['hour']} hours",strtotime($item['date'])));
+                    $this->itemFormat($item);
                     $data[] = $item;
                 }
 
@@ -143,6 +144,12 @@ class GdtReportService extends GdtService
         }
 
         return $valid;
+    }
+
+    protected function itemFormat(&$item){
+        $item['extends'] = json_encode($item);
+        $item['hour'] = $item['hour'] ?? 0;
+        $item['stat_datetime'] = date('Y-m-d H:i:s',strtotime(" +{$item['hour']} hours",strtotime($item['date'])));
     }
 
 

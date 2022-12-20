@@ -116,6 +116,9 @@ class Kernel extends ConsoleKernel
             $schedule->command('gdt:sync_report --type=ad_by_hour --date=today --run_by_account_cost=1 --multi_chunk_size=5')->cron('*/2 * * * *');
             $schedule->command('gdt:sync_report --type=ad_by_hour --date=yesterday --key_suffix=yesterday')->cron('10-15 9 * * *');
 
+            // 广点通账户日结明细
+            $schedule->command('gdt:sync_report --type=account_daily_balance --date=yesterday --key_suffix=yesterday')->cron('* 3 * * *');
+
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Console\Commands\Gdt;
 use App\Common\Console\BaseCommand;
 use App\Common\Helpers\Functions;
 use App\Common\Tools\CustomException;
+use App\Services\Gdt\Report\GdtAccountDailyBalanceReportService;
 use App\Services\Gdt\Report\GdtAccountReportService;
 use App\Services\Gdt\Report\GdtAdReportService;
 
@@ -77,6 +78,10 @@ class GdtSyncReportCommand extends BaseCommand
             case 'ad_by_hour':
                 echo "同步广点通广告小时报表\n";
                 $service = new GdtAdReportService();
+                break;
+            case 'account_daily_balance':
+                echo "同步广点通资金账户日结明细\n";
+                $service = new GdtAccountDailyBalanceReportService();
                 break;
             default:
                 throw new CustomException([

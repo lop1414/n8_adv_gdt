@@ -53,4 +53,26 @@ trait Report
         }
         return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
     }
+
+
+    /**
+     * @param array $accounts
+     * @param int $page
+     * @param int $pageSize
+     * @param array $param
+     * @return mixed
+     * 并发获取资金账户日结明细
+     */
+    public function multiGetDailyBalanceReportList(array $accounts, $page = 1, $pageSize = 100, $param = []){
+        $url = $this->getUrl('v1.3/daily_balance_report/get');
+
+
+        if(!isset($param['fields'])){
+            $param['fields'] =  [
+                'account_id','fund_type','time','deposit','paid',
+                'trans_in', 'trans_out','credit_modify', 'balance','preauth_balance',
+            ];
+        }
+        return $this->multiGetPageList($url, $accounts, $page, $pageSize, $param);
+    }
 }
